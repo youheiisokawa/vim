@@ -48,6 +48,7 @@ NeoBundle 'basyura/jslint.vim'
 NeoBundle 'pangloss/vim-javascript'
 "NeoBundle 'pekepeke/titanium-vim'
 " Other
+NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'tomtom/tcomment_vim'
@@ -86,12 +87,6 @@ filetype plugin indent on
 
 " Installation check.
 NeoBundleCheck
-"if neobundle#exists_not_installed_bundles()
-"  echomsg 'Not installed bundles : ' .
-"        \ string(neobundle#get_not_installed_bundle_names())
-"  echomsg 'Please execute ":NeoBundleInstall" command.'
-"  "finish
-"endif
 
 " -----------------------------------------------------------------------
 " My setting: {{{
@@ -148,7 +143,6 @@ set cindent
 " 自動的に括弧を見てインデントしてくれる機能を使わない
 set nosmartindent
 
-autocmd FileType html filetype indent off
 
 " tab & line end string display on
 set list
@@ -354,8 +348,8 @@ augroup MyAutoCmd
 	autocmd Filetype html inoremap <S-CR> <br /><CR>
 
 	" Disable Indent for HTML file
-	"autocmd FileType html set indentexpr&
-	"autocmd FileType xhtml set indentexpr&
+	autocmd FileType html set indentexpr&
+	autocmd FileType xhtml set indentexpr&
 
 augroup END
 
@@ -617,6 +611,20 @@ nmap <Leader>o <Plug>(openbrowser-open)
 vmap <Leader>o <Plug>(openbrowser-open)
 " ググる
 nnoremap <Leader>g :<C-u>OpenBrowserSearch<Space><C-r><C-w><Enter>
+"}}}
+
+" -----------------------------------------------------------------------
+" vim-fugitive: {{{
+"  - http://qiita.com/items/4936c4412daa866daf7d
+nnoremap <silent> <Space>gb :Gblame<CR>
+nnoremap <silent> <Space>gd :Gdiff<CR>
+nnoremap <silent> <Space>gs :Gstatus<CR>
+ 
+" ブランチ名などの補完
+" http://qiita.com/items/4936c4412daa866daf7d
+"command-line completion
+"set wildmenu
+"set wildmode=list:longest
 "}}}
 
 " -----------------------------------------------------------------------
