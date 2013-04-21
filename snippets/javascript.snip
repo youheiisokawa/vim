@@ -1,0 +1,128 @@
+snippet f
+abbr    No Name Function
+    function(${1}) {
+        ${0:// body...}
+    }
+
+snippet (f)
+abbr    Module function
+    (function(${1}) {
+        ${0:// body...}
+    })(${2});
+
+snippet func
+alias   function
+abbr    Normal function
+	function ${1:function_name}(${2:argument}) {
+		${0:// body...}
+	}
+
+snippet :f
+alias   method
+abbr   Method
+	${1:method_name}: function(${2:argument}) {
+		${0}
+	}
+
+snippet proto
+alias   prototype
+abbr    obj.prototype.something..
+	${1:class_name}.prototype.${2:method_name} = function(${3:first_argument}) {
+		${0:// body...}
+	};
+
+snippet if
+abbr   if () {}
+    if (${1:true}) {
+        ${0:$TM_SELECTED_TEXT}
+    }
+
+
+snippet ife
+abbr   if {} else {}
+    if (${1:true}) {
+        ${2:$TM_SELECTED_TEXT1}
+    } else {
+        ${0:$TM_SELECTED_TEXT2}
+    }
+
+snippet for
+	for (var ${2:i} = 0; $2 < ${1:Things}.length; $2++) {
+		${0}
+	}
+
+snippet forin
+	for (var ${2:i} in ${1:Things}) {
+		${0}
+	}
+
+snippet ;,
+    ${1:value_name}: ${0:value},
+
+
+snippet key
+    ${1:key}: "${2:value}"${3:, }
+
+
+snippet timeout
+alias   setTimeout
+    setTimeout(function() {${0}}${2:}, ${1:10});
+
+snippet interval
+alias   setInterval
+    setInterval(function() {${0}}${2:}, ${1:10});
+
+snippet clear
+alias   clearInterval
+    clearInterval(${0:TimerID});
+
+snippet e+
+alias   addEventListener
+abbr    add event listener
+    ${1:event_target}.addEventListener(${2:event_name}, function(${3:event_argument}) {
+        ${0:// body...}
+    }, false);
+
+snippet e-
+alias   removeEventListener
+abbr    remove event listener
+    ${1:event_target}.removeEventListener(${2:event_name}, function() {
+        ${0:// body...}
+    });
+
+
+#--------------------------------------
+# Modules
+#--------------------------------------
+snippet namespace
+alias   ns
+abbr    initialize namespace
+    var ${1:namespace} = $1 || {};
+
+    $1.namespace = function (ns_string) {
+        var parts = ns_string.split('.'),
+            parent = $1,
+            i;
+
+        if (parts[0] === '$1') {
+            parts = parts.slice(1);
+        }
+
+        for (i = 0, l = parts.length; i < l; i += 1) {
+            // if don't has property, create property.
+            if (typeof parent[parts[i]] === 'undefined') {
+                parent[parts[i]] = {};
+            }
+            parent = parent[parts[i]];
+        }
+        return parent;
+    };
+    // namespace() alias
+    $1.ns = $1.namespace;${0}
+
+#--------------------------------------
+# jQuery snippets
+#--------------------------------------
+snippet $
+abbr jQuery
+    $(${1:Object or Element})${0}

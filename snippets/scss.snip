@@ -1,0 +1,99 @@
+#----------------------------------------
+# Sass snippet
+#----------------------------------------
+# variables
+snippet v
+abbr    $variables: value;
+    $${1:name}: ${2:value};${3}
+
+# extend
+snippet ex
+abbr    @extend
+    @extend ${1:selector};${2}
+
+# mixin
+snippet mix
+abbr    @mixin
+    @mixin ${1:name} (${2}) {
+        ${3:body}
+    }${0}
+
+# mixin include
+snippet inc
+abbr    @include
+    @include ${1:name};${2}
+
+# if
+snippet if
+abbr    @if boolean {}
+    @if ${1:true} {
+        ${2:$TM_SELECTED_TEXT}
+    }${0}
+
+# if else
+snippet ife
+abbr    @if boolean {} @else {}
+    @if ${1:true} {
+        ${2:$TM_SELECTED_TEXT}
+    } @else {
+        ${3}
+    }${0}
+
+# if else if
+snippet ifeif
+abbr    @if boolean {} @else if boolean {} else {}
+    @if ${1:true} {
+        ${2:$TM_SELECTED_TEXT}
+    } @else if ${3} {
+        ${4}
+    } @else {
+        ${5}
+    }${0}
+
+# for
+snippet for
+abbr    @for
+    @for $i from ${1:start} to ${2:end} {
+        ${3://doSomething.}
+    }${0}
+
+# for (to)
+snippet forto
+abbr    @for (to)
+    @for $i from ${1:start} to ${2:end} {
+        ${3://doSomething.}
+    }${0}
+
+# for (through)
+snippet forth
+abbr    @for (through)
+    @for $i from ${1:start} through ${2:end} {
+        ${3://doSomething.}
+    }${0}
+
+# while
+snippet wh
+abbr    @while
+    $i: ${1};
+    @while ${2:expression} {
+        ${3: //doSomething.}#{$i}${4}
+        $i: $i + ${5};
+    }${0}
+
+# each
+snippet each
+abbr    @each $i in~
+    @each ${1} in ${2:expression} {
+        ${3://doSomething}
+    }${0}
+
+# interporation
+snippet interporation
+abbr    interporation
+alias   ip
+    #{${1}}${2}
+
+snippet interporation-variables
+abbr    interporation-variables
+alias   ip+
+    #{$${1}}${2}
