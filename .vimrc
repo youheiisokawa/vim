@@ -51,7 +51,8 @@ NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'tomtom/tcomment_vim'
+"NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'scrooloose/nerdcommenter'
 "NeoBundle 'mattn/webapi-vim'
 NeoBundle 'tyru/open-browser.vim'
 "NeoBundle 'basyura/twibill.vim'
@@ -598,7 +599,7 @@ endfunction
 " -----------------------------------------------------------------------
 " vim-indent-guides: {{{
 "  - https://github.com/nathanaelkane/vim-indent-guides
-set ts=4 sw=4
+"set ts=4 sw=4
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 "}}}
@@ -625,6 +626,21 @@ nnoremap <silent> <Space>gs :Gstatus<CR>
 "command-line completion
 "set wildmenu
 "set wildmode=list:longest
+"}}}
+"
+" -----------------------------------------------------------------------
+" NeadCommenter.vim: {{{
+let NERDSpaceDelims = 1
+" no error message
+let NERDShutUp=1
+" key mapping
+nmap ,, <Plug>NERDCommenterToggle
+vmap ,, <Plug>NERDCommenterToggle
+nmap ,a <Plug>NERDCommenterAppend
+vmap ,a <Plug>NERDCommenterAppend
+
+
+" map <Leader>x, c<space>
 "}}}
 
 " -----------------------------------------------------------------------
