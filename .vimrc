@@ -48,7 +48,8 @@ NeoBundle 'basyura/jslint.vim'
 NeoBundle 'JavaScript-syntax'
 "NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'pangloss/vim-javascript'
-"NeoBundle kchmck/vim-coffee-script"
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'mklabs/vim-backbone'
 " Other
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-powerline'
