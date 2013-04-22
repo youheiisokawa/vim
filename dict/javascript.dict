@@ -157,10 +157,12 @@ onchange
 onclick
 oncontextmenu
 ondblclick
+onerror
 onfocus
 onkeydown
 onkeypress
 onkeyup
+onload
 onmousedown
 onmousemove
 onmouseout
@@ -188,6 +190,7 @@ removeChild
 removeEventListener
 replace
 replaceChild
+requestAnimationFrame
 return
 reverse
 round
