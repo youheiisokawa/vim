@@ -1,5 +1,5 @@
-" Vi互換をオフ
 set nocompatible
+
 filetype off
 
 " -----------------------------------------------------------------------
@@ -29,7 +29,7 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-fontzoom'
 NeoBundle 'thinca/vim-qfreplace'
 
-" TEXT
+" Text
 NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
 
@@ -45,8 +45,10 @@ NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'miripiruni/CSScomb-for-Vim.git'
 " Javascript
 NeoBundle 'basyura/jslint.vim'
+NeoBundle 'JavaScript-syntax'
+"NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'pangloss/vim-javascript'
-"NeoBundle 'pekepeke/titanium-vim'
+"NeoBundle kchmck/vim-coffee-script"
 " Other
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-powerline'
@@ -59,7 +61,6 @@ NeoBundle 'tyru/open-browser.vim'
 "NeoBundle 'basyura/bitly.vim'
 "NeoBundle 'basyura/TweetVim'
 "NeoBundle 'tpope/vim-haml'
-"NeoBundle 'msanders/snipmate.vim'
 "NeoBundle 'scrooloose/nerdtree'
 
 " vim-scripts repos
@@ -69,7 +70,6 @@ NeoBundle 'L9'
 NeoBundle 'Quich-Filter'
 NeoBundle 'QuickBuf'
 NeoBundle 'Sass'
-NeoBundleLazy 'jQuery'
 NeoBundle 'project.tar.gz'
 "TODO
 ""NeoBundle 'AutoClose'
@@ -79,7 +79,6 @@ NeoBundle 'project.tar.gz'
 "
 " //TODO
 "NeoBundle 'tyru/operator-html-escape.vim'
-" NeoBundle 'kana/vim-smartinput'
 " NeoBundle 'kana/vim-smartchr'
 " textobj-indent と textmanip
 "}}}
@@ -94,6 +93,7 @@ NeoBundleCheck
 "
 
 " display
+
 set number
 set ruler
 set cmdheight=1
@@ -273,10 +273,8 @@ noremap <F12> :silent ! start chrome.exe "%:p"<CR>
 noremap <Leader>0 :silent ! start firefox.exe "%:p"<CR>
 noremap <Leader>9 :silent ! start IEXPLORE.EXE "%:p"<CR>
 noremap <Leader>8 :silent ! start Safari.exe "%:p"<CR>
-"nmap ,o :!opera.exe %:p<CR>
-"nmap ,f :!firefox.exe %:p<CR>
 
-" help input key
+" help shortcut key
 nnoremap <C-h>  :<C-u>help<Space>
 
 " 日本語入力切り替え
@@ -295,7 +293,6 @@ set grepprg=grep\ -nH
 " -----------------------------------------------------------------------
 " augroups: {{{
 "
-
 " For noexpandtab
 augroup MyAutoCmd
     " reset autocmd-list
@@ -313,9 +310,6 @@ augroup MyAutoCmd
     " for Sass.vim
     autocmd BufRead,BufNewFile *.sass setfiletype sass
 
-	" syntax for jQuery
-	autocmd BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-
 	" grep
 	autocmd QuickFixCmdPost vimgrep cw
 	autocmd QuickFixCmdPost grep cw
@@ -328,7 +322,7 @@ augroup MyAutoCmd
 	else
 		autocmd BufNewFile *.html 0r ~/.vim/templates/tmpl.html
 		autocmd BufNewFile *.css 0r ~/.vim/templates/css/blank.css
-		autocmd BufNewFile *.js 0r ~/.vim/templates/js/tmpl.js	
+		autocmd BufNewFile *.js 0r ~/.vim/templates/js/tmpl.js
 	endif
 
 	" jQuery Mobile snippets
@@ -351,6 +345,9 @@ augroup MyAutoCmd
 	" Disable Indent for HTML file
 	autocmd FileType html set indentexpr&
 	autocmd FileType xhtml set indentexpr&
+
+	" delete whitespace
+	autocmd BufWritePre * :%s/\s\+$//e
 
 augroup END
 
@@ -451,9 +448,7 @@ endif
 
 " -----------------------------------------------------------------------
 " neocomplcache: {{{
-"  - https://github.com/Shougo/neocomplcache
-"  - https://github.com/Shougo/neocomplcache/blob/998764e1072fa5b183c3da4705b8187658fa0b41/presen/neocomplcache.txt
-"
+
 " Use neocomplcache.
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
@@ -462,48 +457,114 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 
-"Quick Type, ignore neocomplcache.
+" Quick Type, ignore neocomplcache.
 let g:NeoComplCache_SkipCompletionTime = '0.3'
 let g:NeoComplCache_SkipInputTime = '0.1'
 
-" Snippets file dir
-if has('win32') || has('win64')
-	let g:neocomplcache_snippets_dir = $HOME.'/vimfiles/snippets'
-else
-	let g:neocomplcache_snippets_dir = $HOME.'/.vim/snippets'
+" Define file-type dependent dictionaries.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+    \ }
+
+" Define keyword, for minor languages
+if !exists('g:neocomplcache_keyword_patterns')
+  let g:neocomplcache_keyword_patterns = {}
 endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 " Plugin key-mappings.
-imap <TAB> <Plug>(neocomplcache_snippets_expand)
-"imap <C-k> <Plug>(neocomplcache_snippets_expand)
-" use unite
-"imap <C-k> <Plug>(neocomplcache_start_unite_complete)
-smap <C-k> <Plug>(neocomplcache_snippets_expand)
 inoremap <expr><C-g> neocomplcache#undo_completion()
 inoremap <expr><C-l> neocomplcache#complete_common_string()
 
-" <CR> : delete popup and hold indent
-" <BS> : close popup and delete backword char.
-" <C-h>: close popup and delete backword char.
-" <C-n>: manual-start neocomplcache.
-" <C-p>: Vim native-keyword complement.
-" <C-j>: Vim native-Omni completion.
-"inoremap <expr><CR> pumvisible() ? "\<C-y>\<CR>X\<BS>" : "\<CR>X\<BS>"
-"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
-inoremap <expr><C-p> pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
-inoremap <expr><C-j> &filetype == 'vim' ? "\<C-x>\<C-v>\<C-p>" : "\<C-x>\<C-o>\<C-p>"
-" TODO:extends
 " <CR>: close popup and save indent.
+"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+"  return neocomplcache#smart_close_popup() . "\<CR>"
+"  " For no inserting <CR> key.
+"  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+"endfunction
 "inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
 " <TAB>: completion.
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+" <C-n>: neocomplcache.
+inoremap <expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
+"inoremap <expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
+" <C-p>: keyword completion.
+inoremap <expr><C-p> pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
+"inoremap <expr><C-p> pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
+inoremap <expr><C-y> neocomplcache#close_popup()
+inoremap <expr><C-e> neocomplcache#cancel_popup()
 
+imap <C-s> <Plug>(neocomplcache_start_unite_snippet)
+
+" <S-TAB>: completion back.
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
+
+" <C-j>: Vim native-Omni completion.
+"inoremap <expr><C-j> &filetype == 'vim' ? "\<C-x>\<C-v>\<C-p>" : "\<C-x>\<C-o>\<C-p>"
+
+" use unite
+"imap <C-k> <Plug>(neocomplcache_start_unite_complete)
+"imap <C-s>  <Plug>(neocomplcache_start_unite_snippet)
+"smap <C-k> <Plug>(neocomplcache_snippets_expand)
+
+
+" Enable omni completion. Not required if they are already set elsewhere in .vimrc
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Snippets Edit commands for NeoComplCache
-nnoremap <Leader>nce :NeoComplCacheEditSnippets
+"nnoremap <Leader>nce :NeoComplCacheEditSnippets
 
+"}}}
+
+" -----------------------------------------------------------------------
+" neosnippet: {{{
+
+let bundle = neobundle#get('neosnippet')
+function! bundle.hooks.on_source(bundle)
+  imap <silent>L <Plug>(neosnippet_jump_or_expand)
+  smap <silent>L <Plug>(neosnippet_jump_or_expand)
+  xmap <silent>L <Plug>(neosnippet_start_unite_snippet_target)
+  imap <silent>K <Plug>(neosnippet_expand_or_jump)
+  smap <silent>K <Plug>(neosnippet_expand_or_jump)
+  imap <silent>G <Plug>(neosnippet_expand)
+  imap <silent>S <Plug>(neosnippet_start_unite_snippet)
+  xmap <silent>o <Plug>(neosnippet_register_oneshot_snippet)
+  xmap <silent>U <Plug>(neosnippet_expand_target)
+
+  " SuperTab like snippets behavior.
+  imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+  let g:neosnippet#enable_snipmate_compatibility = 1
+
+  inoremap <expr><C-g>     neocomplcache#undo_completion()
+  inoremap <expr><C-l>     neocomplcache#complete_common_string()
+
+  " Snippets file dir
+  "let g:neosnippet#snippets_directory = '~/.vim/snippets'
+  if has('win32') || has('win64')
+  	let g:neosnippet#snippets_directory = $HOME.'/vimfiles/snippets'
+  else
+  	let g:neosnippet#snippets_directory = $HOME.'/.vim/snippets'
+  endif
+endfunction
+
+unlet bundle
+
+nnoremap <silent> [Window]f              :<C-u>Unite neosnippet/user neosnippet/runtime<CR>
 "}}}
 
 " -----------------------------------------------------------------------
@@ -621,14 +682,14 @@ nnoremap <Leader>g :<C-u>OpenBrowserSearch<Space><C-r><C-w><Enter>
 nnoremap <silent> <Space>gb :Gblame<CR>
 nnoremap <silent> <Space>gd :Gdiff<CR>
 nnoremap <silent> <Space>gs :Gstatus<CR>
- 
+
 " ブランチ名などの補完
 " http://qiita.com/items/4936c4412daa866daf7d
 "command-line completion
 "set wildmenu
 "set wildmode=list:longest
 "}}}
-"
+
 " -----------------------------------------------------------------------
 " NeadCommenter.vim: {{{
 let NERDSpaceDelims = 1
@@ -639,9 +700,6 @@ nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterToggle
 nmap ,a <Plug>NERDCommenterAppend
 vmap ,a <Plug>NERDCommenterAppend
-
-
-" map <Leader>x, c<space>
 "}}}
 
 " -----------------------------------------------------------------------
