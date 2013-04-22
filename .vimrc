@@ -474,7 +474,8 @@ else
 endif
 
 " Plugin key-mappings.
-imap <C-k> <Plug>(neocomplcache_snippets_expand)
+imap <TAB> <Plug>(neocomplcache_snippets_expand)
+"imap <C-k> <Plug>(neocomplcache_snippets_expand)
 " use unite
 "imap <C-k> <Plug>(neocomplcache_start_unite_complete)
 smap <C-k> <Plug>(neocomplcache_snippets_expand)
@@ -497,7 +498,7 @@ inoremap <expr><C-j> &filetype == 'vim' ? "\<C-x>\<C-v>\<C-p>" : "\<C-x>\<C-o>\<
 " <CR>: close popup and save indent.
 "inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 
 " Snippets Edit commands for NeoComplCache
