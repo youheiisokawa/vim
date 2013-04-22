@@ -329,9 +329,8 @@ augroup MyAutoCmd
 	" jQuery Mobile snippets
 	autocmd BufNewFile *.html inoremap data<TAB> <div data-=""></div><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
-	" JavaScript snippets
-	autocmd filetype javascript inoremap f<TAB> function() {}<Left>
-	autocmd filetype javascript inoremap cl<TAB> console.log();<Left><Left>
+	" JavaScript dictionaries
+	autocmd filetype javascript :set dictionary=$HOME/vimfiles/dict/javascript.dict,$HOME/vimfiles/dict/jQuery.dict
 
 	" Sass interporation snippets
 	"autocmd filetype scss inoremap ip<TAB> #{}<Left>
@@ -465,8 +464,8 @@ let g:NeoComplCache_SkipInputTime = '0.1'
 " Define file-type dependent dictionaries.
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
+    \ 'javascript' : expand('~/dict/jQuery.dict'),
+    \ 'scheme' : expand('~/.gosh_completions')
     \ }
 
 " Define keyword, for minor languages
@@ -491,7 +490,7 @@ inoremap <expr><C-l> neocomplcache#complete_common_string()
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 " <C-n>: neocomplcache.
 inoremap <expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
 "inoremap <expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
