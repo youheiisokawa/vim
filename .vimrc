@@ -9,7 +9,7 @@ if has('vim_starting')
   if has('win32') || has('win64')
     set runtimepath+=~/vimfiles/bundle/neobundle.vim
     call neobundle#rc(expand('~/vimfiles/bundle/'))
-  else
+else
     set runtimepath+=~/.vim/bundle/neobundle.vim
     call neobundle#rc(expand('~/.vim/bundle/'))
   endif
@@ -18,12 +18,19 @@ endif
 " install plugin
 NeoBundleFetch 'Shougo/neobundle.vim'
 " Original repos on github
-NeoBundle 'Shougo/vimproc'
+NeoBundle 'Shougo/vimproc', {
+	\ 'build' : {
+	\     'windows' : 'make -f make_mingw64.mak',
+	\     'cygwin' : 'make -f make_cygwin.mak',
+	\     'mac' : 'make -f make_mac.mak',
+	\     'unix' : 'make -f make_unix.mak'
+	\    },
+	\ }
+NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-fontzoom'
@@ -32,6 +39,7 @@ NeoBundle 'thinca/vim-qfreplace'
 " Text
 NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'mattn/multi-vim'
 
 " HTML
 NeoBundle 'mattn/zencoding-vim'
@@ -65,7 +73,7 @@ NeoBundle 'tyru/open-browser.vim'
 "NeoBundle 'scrooloose/nerdtree'
 
 " vim-scripts repos
-NeoBundleLazy 'surround.vim'
+NeoBundle 'surround.vim'
 NeoBundle 'L9'
 "NeoBundle 'FuzzyFinder'
 NeoBundle 'Quich-Filter'
@@ -73,7 +81,7 @@ NeoBundle 'QuickBuf'
 NeoBundle 'Sass'
 NeoBundle 'project.tar.gz'
 "TODO
-""NeoBundle 'AutoClose'
+"NeoBundle 'AutoClose'
 
 " それ以外にある git リポジトリにあるプラグイン
 " Non git repos
@@ -201,8 +209,10 @@ noremap k gk
 noremap gj j
 noremap gk k
 
-" 入力モード時にctrl + Enterで改行
+" <CR>
 inoremap <C-CR> <ESC>o
+inoremap <S-CR> <ESC>o
+inoremap <C-S-CR> <ESC>O
 
 " 検索結果に移動した時、その位置を画面の中央に変更
 nnoremap n nzz
@@ -303,7 +313,7 @@ augroup MyAutoCmd
     "autocmd BufNewFile,BufRead * set expandtab
 
     " go to file!
-    autocmd FileType html setlocal includeexpr=substitute(v:fname,'^\\/','','') | setlocal path+=;/
+    autocmd FileType html,xhtml setlocal includeexpr=substitute(v:fname,'^\\/','','') | setlocal path+=;/
 
     " Custom folding
     "autocmd BufEnter * if &filetype == "javascript" | set foldmarker={,} | set foldlevel=3 | set foldcolumn=7 | endif
@@ -327,24 +337,22 @@ augroup MyAutoCmd
 	endif
 
 	" jQuery Mobile snippets
-	autocmd BufNewFile *.html inoremap data<TAB> <div data-=""></div><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+	"autocmd BufNewFile *.html inoremap data<TAB> <div data-=""></div><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 	" JavaScript dictionaries
-	autocmd filetype javascript :set dictionary=$HOME/vimfiles/dict/javascript.dict,$HOME/vimfiles/dict/jQuery.dict
+	autocmd FileType javascript :set dictionary=$HOME/vimfiles/dict/javascript.dict,$HOME/vimfiles/dict/jQuery.dict
 
 	" Sass interporation snippets
 	"autocmd filetype scss inoremap ip<TAB> #{}<Left>
 
 	" xml, html insert end tag
-	autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
-	autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
+	autocmd FileType html,xhtml,xml inoremap <buffer> </ </<C-x><C-o>
 
 	" insert "<br />"
-	autocmd Filetype html inoremap <S-CR> <br /><CR>
+	autocmd FileType html,xhtml inoremap <S-CR> <br /><CR>
 
 	" Disable Indent for HTML file
-	autocmd FileType html set indentexpr&
-	autocmd FileType xhtml set indentexpr&
+	autocmd FileType html,xhtml set indentexpr&
 
 	" delete whitespace
 	autocmd BufWritePre * :%s/\s\+$//e
@@ -534,15 +542,15 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 let bundle = neobundle#get('neosnippet')
 function! bundle.hooks.on_source(bundle)
-  imap <silent>L <Plug>(neosnippet_jump_or_expand)
-  smap <silent>L <Plug>(neosnippet_jump_or_expand)
-  xmap <silent>L <Plug>(neosnippet_start_unite_snippet_target)
-  imap <silent>K <Plug>(neosnippet_expand_or_jump)
-  smap <silent>K <Plug>(neosnippet_expand_or_jump)
-  imap <silent>G <Plug>(neosnippet_expand)
-  imap <silent>S <Plug>(neosnippet_start_unite_snippet)
-  xmap <silent>o <Plug>(neosnippet_register_oneshot_snippet)
-  xmap <silent>U <Plug>(neosnippet_expand_target)
+"  imap <silent>L <Plug>(neosnippet_jump_or_expand)
+"  smap <silent>L <Plug>(neosnippet_jump_or_expand)
+"  xmap <silent>L <Plug>(neosnippet_start_unite_snippet_target)
+"  imap <silent>K <Plug>(neosnippet_expand_or_jump)
+"  smap <silent>K <Plug>(neosnippet_expand_or_jump)
+"  imap <silent>G <Plug>(neosnippet_expand)
+"  imap <silent>S <Plug>(neosnippet_start_unite_snippet)
+"  xmap <silent>o <Plug>(neosnippet_register_oneshot_snippet)
+"  xmap <silent>U <Plug>(neosnippet_expand_target)
 
   " SuperTab like snippets behavior.
   imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -571,7 +579,7 @@ nnoremap <silent> [Window]f              :<C-u>Unite neosnippet/user neosnippet/
 " vimfiler: {{{
 "
 " disabled 'safemode'
-"let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_safe_mode_by_default = 0
 " default filer config
 let g:vimfiler_as_default_explorer = 1
 
