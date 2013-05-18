@@ -354,8 +354,8 @@ augroup MyAutoCmd
 	" Disable Indent for HTML file
 	autocmd FileType html,xhtml set indentexpr&
 
-	" delete whitespace
-	autocmd BufWritePre * :%s/\s\+$//e
+	" TODO: delete whitespace
+	"autocmd BufWritePre * :%s/\s\+$//e
 
 augroup END
 

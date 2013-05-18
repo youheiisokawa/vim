@@ -66,7 +66,7 @@ command! ChgencSjis set fenc=cp932
 map <F2> <ESC>:bprevious<CR>
 map <F3> <ESC>:bnext<CR>
 "map <F4> <ESC>:bwipe<CR>
-map <F4> <ESC>:Unite 
+map <F4> <ESC>:Unite
 map <F9> <ESC>:VimFiler<CR>
 map <F10> <ESC><Plug>ToggleProject<CR>
 "map <F9> <ESC>:Kwbd<CR>
