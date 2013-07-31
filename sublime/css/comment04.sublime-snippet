@@ -1,0 +1,6 @@
+<snippet>
+	<content><![CDATA[<!--//#$1-->$2]]></content>
+	<tabTrigger>`</tabTrigger>
+    <description>CSS - comment04</description>
+    <scope>text.html</scope>
+</snippet>

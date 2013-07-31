@@ -1,0 +1,27 @@
+<snippet>
+    <content><![CDATA[var ${1:namespace} = $1 || {};
+
+$1.namespace = function (ns_string) {
+	var parts = ns_string.split('.'),
+		parent = $1,
+		i;
+
+	if (parts[0] === '$1') {
+		parts = parts.slice(1);
+	}
+
+	for (i = 0, l = parts.length; i < l; i += 1) {
+		// if don't has property, create property.
+		if (typeof parent[parts[i]] === 'undefined') {
+			parent[parts[i]] = {};
+		}
+		parent = parent[parts[i]];
+	}
+	return parent;
+};
+// namespace() alias
+$1.ns = $1.namespace;${0}]]></content>
+    <tabTrigger>ns</tabTrigger>
+    <scope>source.js</scope>
+    <description>init namespace</description>
+</snippet>

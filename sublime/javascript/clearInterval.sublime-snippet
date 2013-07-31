@@ -1,0 +1,6 @@
+<snippet>
+    <content><![CDATA[clearInterval(${0:TimerID});]]></content>
+    <tabTrigger>clear</tabTrigger>
+    <scope>source.js</scope>
+    <description>clearInterval(timer);</description>
+</snippet>

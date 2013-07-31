@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[${1:event_target}.removeEventListener(${2:event_name}, function(${3:event_argument}) {
+	${0:// body...}
+}, false);]]></content>
+    <tabTrigger>e-</tabTrigger>
+    <scope>source.js</scope>
+    <description>remove Event Listener</description>
+</snippet>
