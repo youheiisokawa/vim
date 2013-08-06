@@ -249,13 +249,13 @@ for n in range(1, 9)
 endfor
 
 " tc 新しいタブを一番右に作る
-map <silent> [Tag]c :tablast <bar> tabnew<CR>
+map <silent> [Tag]n :tablast <bar> tabnew<CR>
 " tx タブを閉じる
 map <silent> [Tag]x :tabclose<CR>
 " tn 次のタブ
-map <silent> [Tag]n :tabnext<CR>
+map <silent> [Tag]l :tabnext<CR>
 " tp 前のタブ
-map <silent> [Tag]p :tabprevious<CR>
+map <silent> [Tag]h :tabprevious<CR>
 
 
 " jkでのカーソルを表示行単位で移動できるように変更
