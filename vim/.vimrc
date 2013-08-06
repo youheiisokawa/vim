@@ -30,11 +30,18 @@ NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'h1mesuke/unite-outline'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-fontzoom'
 NeoBundle 'thinca/vim-qfreplace'
+
+" Unite plugin
+NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'ujihisa/unite-gem'
+NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'ujihisa/quicklearn'
+NeoBundle 'thinca/vim-unite-history'
+NeoBundle 'kannokanno/unite-todo'
 
 " Text
 NeoBundle 'kana/vim-smartinput'
@@ -47,6 +54,7 @@ NeoBundle 'h1mesuke/vim-alignta'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'hokaccha/vim-html5validator'
+NeoBundle 'digitaltoad/vim-jade'
 " CSS
 NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
@@ -61,6 +69,7 @@ NeoBundle 'mklabs/vim-backbone'
 " Other
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'thinca/vim-ref'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 "NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -83,6 +92,7 @@ NeoBundle 'project.tar.gz'
 "TODO
 "NeoBundle 'AutoClose'
 
+
 " それ以外にある git リポジトリにあるプラグイン
 " Non git repos
 "
@@ -99,7 +109,6 @@ NeoBundleCheck
 
 " -----------------------------------------------------------------------
 " My setting: {{{
-"
 
 " display
 
@@ -455,6 +464,43 @@ endif
 "}}}
 
 " -----------------------------------------------------------------------
+" unite: {{{
+" The prefix key
+nnoremap [unite] <Nop>
+nmap <Leader>f [unite]
+
+" unite.vim keymap
+" https://github.com/alwei/dotfiles/blob/3760650625663f3b08f24bc75762ec843ca7e112/.vimrc
+nnoremap [unite]u :<C-u> -no-split<Space>
+nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer<CR>
+nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
+nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
+nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir<CR>
+nnoremap <silent> ,vr :UniteResume<CR>
+
+" vinarise
+let g:vinarise_enable_auto_detect = 1
+
+" unite-build map
+nnoremap <silent> ,vb :Unite build<CR>
+nnoremap <silent> ,vcb :Unite build:!<CR>
+nnoremap <silent> ,vch :UnitebuildClearHighlight<CR>
+
+" unite-grepのバックエンドをagに切り替える
+" http://qiita.com/items/c8962f9325a5433dc50d
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+let g:unite_source_grep_recursive_opt = ''
+let g:unite_source_grep_max_candidates = 200
+
+" unite-grepのキーマップ
+" 選択した文字列をunite-grep
+" https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
+vnoremap /g y:Unite grep::-iHRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
+
+"}}}
+
+" -----------------------------------------------------------------------
 " neocomplcache: {{{
 
 " Use neocomplcache.
@@ -583,6 +629,10 @@ let g:vimfiler_safe_mode_by_default = 0
 " default filer config
 let g:vimfiler_as_default_explorer = 1
 
+
+" enable file edit
+set modifiable
+set write
 "}}}
 
 " -----------------------------------------------------------------------
@@ -734,7 +784,7 @@ let g:user_zen_settings = {
 \					." type=\"application/x-shockwave-flash\""
 \					." id=\"\" width=\"\" height=\"\">\n"
 \					."<param name=\"movie\" value=\"\" />\n</object>",
-\			'script:jq': "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js\" type=\"text/javascript\"></script>",
+\			'script:jq': "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js\" type=\"text/javascript\"></script>",
 \		},
 \	},
 \	'css': {
