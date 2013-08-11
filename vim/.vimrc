@@ -48,8 +48,19 @@ NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'mattn/multi-vim'
 
+" Colorscheme
+NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'vim-scripts/twilight'
+NeoBundle 'jonathanfilip/vim-lucius'
+NeoBundle 'jpo/vim-railscasts-theme'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'vim-scripts/Wombat'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'vim-scripts/rdark'
+
 " HTML
-NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'mattn/emmet-vim'
 NeoBundle 'h1mesuke/vim-alignta'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'othree/html5.vim'
@@ -60,18 +71,20 @@ NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'miripiruni/CSScomb-for-Vim.git'
 " Javascript
-NeoBundle 'basyura/jslint.vim'
-NeoBundle 'JavaScript-syntax'
-"NeoBundle 'jelera/vim-javascript-syntax'
+NeoBundle 'walm/jshint.vim'
+" NeoBundle 'JavaScript-syntax'
+" NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'othree/javascript-libraries-syntax.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'mklabs/vim-backbone'
+
 " Other
+NeoBundle 'scrooloose/syntastic.git'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-powerline'
-NeoBundle 'thinca/vim-ref'
 NeoBundle 'nathanaelkane/vim-indent-guides'
-"NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'thinca/vim-ref'
 NeoBundle 'scrooloose/nerdcommenter'
 "NeoBundle 'mattn/webapi-vim'
 NeoBundle 'tyru/open-browser.vim'
@@ -79,15 +92,12 @@ NeoBundle 'tyru/open-browser.vim'
 "NeoBundle 'basyura/bitly.vim'
 "NeoBundle 'basyura/TweetVim'
 "NeoBundle 'tpope/vim-haml'
-"NeoBundle 'scrooloose/nerdtree'
 
 " vim-scripts repos
 NeoBundle 'surround.vim'
 NeoBundle 'L9'
-"NeoBundle 'FuzzyFinder'
 NeoBundle 'Quich-Filter'
 NeoBundle 'QuickBuf'
-NeoBundle 'Sass'
 NeoBundle 'project.tar.gz'
 "TODO
 "NeoBundle 'AutoClose'
@@ -167,7 +177,7 @@ set nosmartindent
 set list
 
 " listで表示される文字のフォーマットを指定する
-set listchars=eol:$,tab:>-,trail:_,extends:<
+set listchars=eol:$,tab:»\ ,trail:_,extends:<
 "set listchars=eol:$,tab:>\ ,extends:<
 "set lcs=tab:>-,eol:$,trail:_,extends:\
 "set listchars=tab:>-
@@ -391,14 +401,8 @@ augroup MyAutoCmd
 		autocmd BufNewFile *.js 0r ~/.vim/templates/js/tmpl.js
 	endif
 
-	" jQuery Mobile snippets
-	"autocmd BufNewFile *.html inoremap data<TAB> <div data-=""></div><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
-
 	" JavaScript dictionaries
 	autocmd FileType javascript :set dictionary=$HOME/vimfiles/dict/javascript.dict,$HOME/vimfiles/dict/jQuery.dict
-
-	" Sass interporation snippets
-	"autocmd filetype scss inoremap ip<TAB> #{}<Left>
 
 	" xml, html insert end tag
 	autocmd FileType html,xhtml,xml inoremap <buffer> </ </<C-x><C-o>
@@ -618,7 +622,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 
 " Enable omni completion. Not required if they are already set elsewhere in .vimrc
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType css,scss setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
@@ -654,7 +658,6 @@ function! bundle.hooks.on_source(bundle)
   inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
   " Snippets file dir
-  "let g:neosnippet#snippets_directory = '~/.vim/snippets'
   if has('win32') || has('win64')
   	let g:neosnippet#snippets_directory = $HOME.'/vimfiles/snippets'
   else
@@ -715,17 +718,26 @@ nnoremap <silent> ,irh :VimShell iexe rhino<CR>
 " jslint.vim: {{{
 "  - https://github.com/basyura/jslint.vim
 "  - :copen -> :cnext ...
-augroup jslint
-    autocmd! jslint
-    autocmd FileType javascript call s:javascript_filetype_settings()
-augroup END
+" augroup jslint
+    " autocmd! jslint
+    " autocmd FileType javascript call s:javascript_filetype_settings()
+" augroup END
 
-function! s:javascript_filetype_settings()
-  autocmd BufLeave     <buffer> call jslint#clear()
-  autocmd BufWritePost <buffer> call jslint#check()
-  autocmd CursorMoved  <buffer> call jslint#message()
-endfunction
+" function! s:javascript_filetype_settings()
+  " autocmd BufLeave     <buffer> call jslint#clear()
+  " autocmd BufWritePost <buffer> call jslint#check()
+  " autocmd CursorMoved  <buffer> call jslint#message()
+" endfunction
 
+"}}}
+
+" -----------------------------------------------------------------------
+" jshint, syntastic: {{{
+
+let g:syntastic_mode_map = {
+\ "mode" : "active",
+\ "active_filetypes" : ["javascript", "json"],
+\}
 "}}}
 
 " -----------------------------------------------------------------------
@@ -766,6 +778,8 @@ endfunction
 " vim-indent-guides: {{{
 "  - https://github.com/nathanaelkane/vim-indent-guides
 "set ts=4 sw=4
+let g:indent_guides_enable_on_vim_statup = 1
+let g:indent_guides_auto_colors = 0
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 "}}}
@@ -807,21 +821,10 @@ vmap ,a <Plug>NERDCommenterAppend
 "}}}
 
 " -----------------------------------------------------------------------
-" zencoding.vim: {{{
-"let g:user_zen_leader_key = '<C>'
-"let g:user_zen_expandabbr_key = '<TAB>'
-"let g:user_zen_expandword_key = '<C-h>'
-"let g:user_zen_balancetaginward_key = '<C-y>,'
-"let g:user_zen_balancetagoutward_key = '<C-y>,'
-"let g:user_zen_next_key = '<C-y>,'
-"let g:user_zen_prev_key = '<C-y>,'
-"let g:user_zen_imagesize_key = '<C-y>,'
-"let g:user_zen_togglecomment_key = '<C-y>,'
-"let g:user_zen_splitjointag_key = '<C-y>,'
-"let g:user_zen_removetag_key = '<A-->,'
-"let g:user_zen_anchorizeurl_key = '<C-y>,'
-"let g:user_zen_anchorizesummary_key = '<C-y>,'
-let g:user_zen_settings = {
+" emmet.vim: {{{
+let g:user_emmet_leader_key = '<TAB>'
+
+let g:user_emmet_settings = {
 \	'lang': 'ja',
 \	'html': {
 \		'indentation': '',
@@ -830,39 +833,14 @@ let g:user_zen_settings = {
 \					." type=\"application/x-shockwave-flash\""
 \					." id=\"\" width=\"\" height=\"\">\n"
 \					."<param name=\"movie\" value=\"\" />\n</object>",
-\			'script:jq': "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js\" type=\"text/javascript\"></script>",
+\			'script:jq': "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js\" type=\"text/javascript\"></script>",
 \		},
 \	},
 \	'css': {
 \		'filters': 'fc'
 \	},
 \	'javascript': {
-\		'snippets': {
-\			'fn'       : "function(){\n\t${cursor}\n};",
-\			'fn:name'  : "function ${cursor}(){\n\t${child}\n};",
-\			'fn:scope' : "(function(){\n\t${cursor}\n})();",
-\			'get:id'   : "document.getElementById(${cursor});",
-\			'get:class': "document.getElementsByClassName(${cursor});",
-\			'get:tag'  : "document.getElementsByTagName(${cursor});",
-\			'create'   : "document.createElement(${cursor});",
-\			'tm'       : "setTimeout(function(){\n\t${cursor}\n}, 100);",
-\			'interval' : "setInterval(function(){\n\t${cursor}\n}, 100);",
-\			'add:event': "object.addEventListener('${cursor}', function(){\n\t${child}\n}, false);",
-\			'jq'       : "$(function(){\n\t${cursor}${child}\n});",
-\			'jq:scope' : "(function($){\n\t$(function(){\n\t\t${cursor}${child}\n\t});\n})(jQuery);",
-\			'jq:each'  : "$.each(${cursor}, function(index, item){\n\t${child}\n});",
-\			'jq:ajax'  : "$.ajax({\n\ttype: 'GET',\n\turl: 'file path${cursor}',\n\tdataType: 'file type',\n\tsuccess: function(data){\n\t\t${child}\n\t}\n});",
-\			'jq:plugin': "jQuery.fn.pluginName = function(){\n\t${cursor}\n};",
-\			'jq:proxy' : "$.proxy(function(){\n\t${cursor}\n},obj);",
-\			'jq:conf'  : "jQuery.noConflict();",
-\			'Ti'       : "Titanium.",
-\			'Ti:ui'    : "Ti.UI.",
-\			'Ti:info'  : "Ti.API.info(${cursor});",
-\			'Ti:debug' : "Ti.API.debug(${cursor});",
-\			'Ti:error' : "Ti.API.error(${cursor});",
-\			'Ti:log'   : "Ti.API.log(${cursor}level, msg);",
-\			'Ti:warn'  : "Ti.API.warn(${cursor});",
-\		},
+\		
 \	},
 \}
 

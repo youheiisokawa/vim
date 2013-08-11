@@ -1,4 +1,7 @@
-colorscheme twilight
+" let g:molokai_original = 1
+" colorscheme molokai
+colorscheme jellybeans
+
 " カーソルを行頭、行末で止まらないようにする
 set whichwrap=b,s,h,l,<,>,[,]
 " 現在ディレクトリを、バッファで開いているファイルが存在しているディレクトリに
@@ -13,7 +16,8 @@ set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V
 "set guifont=Consolas:h11
 "set guifontwide=MS_Gothic:h11:cSHIFTJIS
 if (has('gui_macvim'))
-	set guifontwide=Osaka-mono:h14
+	set guifont=Ricty:h15
+	set guifontwide=Ricty:h15
 else
 	set guifont=Consolas:h11
 	set guifontwide=MS_Gothic:h11:cSHIFTJIS
@@ -67,7 +71,7 @@ map <F2> <ESC>:bprevious<CR>
 map <F3> <ESC>:bnext<CR>
 "map <F4> <ESC>:bwipe<CR>
 map <F4> <ESC>:Unite
-map <F9> <ESC>:VimFiler<CR>
+map <F9> <ESC>:VimFilerExplorer ~/
 map <F10> <ESC><Plug>ToggleProject<CR>
 "map <F9> <ESC>:Kwbd<CR>
 "map <S-F9> <ESC>:FKwbd<CR>
