@@ -67,7 +67,7 @@ NeoBundle 'othree/html5.vim'
 NeoBundle 'hokaccha/vim-html5validator'
 NeoBundle 'digitaltoad/vim-jade'
 " CSS
-NeoBundle 'cakebaker/scss-syntax.vim'
+" NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'miripiruni/CSScomb-for-Vim.git'
 " Javascript
@@ -838,6 +838,16 @@ let g:user_emmet_settings = {
 \	},
 \	'css': {
 \		'filters': 'fc'
+\	},
+\	'scss': {
+\		'snippets': {
+\			'@if': "@if {\n\t|\n}",
+\			'@e': "@else {\n\t|\n}",
+\			'@in': "@include |",
+\			'@ex': "@extend |",
+\			'@mx': "@mixin {\n\t|\n}",
+\			'@fn': "@function {\n\t|\n}"
+\		}
 \	},
 \	'javascript': {
 \		
