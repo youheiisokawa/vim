@@ -822,7 +822,7 @@ vmap ,a <Plug>NERDCommenterAppend
 
 " -----------------------------------------------------------------------
 " emmet.vim: {{{
-let g:user_emmet_leader_key = '<TAB>'
+" let g:user_emmet_leader_key = '<c-y>'
 
 let g:user_emmet_settings = {
 \	'lang': 'ja',
