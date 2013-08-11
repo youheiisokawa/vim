@@ -1,0 +1,15 @@
+{
+	"strict"    : true,
+	"indent"    : 4,
+	"camelcase" : true,
+	"unused"    : true,
+	"eqeqeq"    : true,
+	"undef"     : true,
+	"browser"   : true,
+	"jquery"    : true,
+	"devel"     : true,
+	"globals"   : {
+		"_"     : false,
+		"Backbone": false
+	}
+}
