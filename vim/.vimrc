@@ -80,6 +80,7 @@ NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'mklabs/vim-backbone'
 
 " Other
+NeoBundle 'honza/vim-snippets'
 NeoBundle 'scrooloose/syntastic.git'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-powerline'
