@@ -1,6 +1,7 @@
 #Application Shortcuts
 alias safari='open -g -a safari'
 alias skitch='open -g -a skitch'
+alias evernote='open -g -a evernote'
 
 # for Shortcut
 alias up='cd ..'
@@ -18,6 +19,10 @@ alias sr='screen -d -R'
 alias grep='grep --exclude=*.svn*'
 alias greprn='grep -rn --exclude=*.svn*'
 alias bye='sudo shutdown -h now'
+
+# for Editor
+alias mvim='/Applications/MacVim.app/Contents/MacOS/mvim'
+alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
 
 # for svn
 alias st='svn st'
@@ -47,3 +52,6 @@ export PATH=~/.nodebrew/current/bin:$PATH  # for nodebrew
 # for rbenv
 eval "$(rbenv init -)"
 
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
