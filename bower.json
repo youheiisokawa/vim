@@ -1,0 +1,19 @@
+{
+  "name": "projectname",
+  "version": "0.1.0",
+  "authors": [
+    "Youhei Isokawa <youheiisokawa@gmail.com>"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "normalize-css": null,
+    "modernizr": null,
+    "html5-boilerplate": null,
+    "lodash": "~2.2.0",
+    "backbone": "~1.0.0",
+    "handlebars": "~1.0.0",
+    "jquery": "~1.10.2",
+    "jquery.easing": "https://github.com/gdsmith/jquery.easing.git",
+    "jquery.cookie": "~1.4.0"
+  }
+}
