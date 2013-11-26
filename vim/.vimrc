@@ -678,6 +678,8 @@ nnoremap <silent> [Window]f              :<C-u>Unite neosnippet/user neosnippet/
 let g:vimfiler_safe_mode_by_default = 0
 " default filer config
 let g:vimfiler_as_default_explorer = 1
+" default open action
+let g:vimfiler_edit_action = 'tabopen'
 
 
 " enable file edit

@@ -1,6 +1,6 @@
 " let g:molokai_original = 1
 " colorscheme molokai
-colorscheme jellybeans
+colorscheme twilight
 
 " カーソルを行頭、行末で止まらないようにする
 set whichwrap=b,s,h,l,<,>,[,]
@@ -43,9 +43,9 @@ set showbreak=++++
 "gui
 "set transparency=220
 " ウインドウの幅
-set columns=150
+set columns=240
 " ウインドウの高さ
-set lines=60
+set lines=70
 " コマンドラインの高さ(GUI使用時)
 set cmdheight=2
 " delete beep & flashing
@@ -71,7 +71,7 @@ map <F2> <ESC>:bprevious<CR>
 map <F3> <ESC>:bnext<CR>
 "map <F4> <ESC>:bwipe<CR>
 map <F4> <ESC>:Unite
-map <F9> <ESC>:VimFilerExplorer ~/
+map <F9> <ESC>:VimFilerExplorer<CR>
 map <F10> <ESC><Plug>ToggleProject<CR>
 "map <F9> <ESC>:Kwbd<CR>
 "map <S-F9> <ESC>:FKwbd<CR>
