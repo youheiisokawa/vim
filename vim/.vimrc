@@ -47,6 +47,7 @@ NeoBundle 'kannokanno/unite-todo'
 NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'mattn/multi-vim'
+" NeoBundle 'AndrewRadev/switch.vim'
 
 " Colorscheme
 NeoBundle 'nanotech/jellybeans.vim'
@@ -80,6 +81,7 @@ NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'mklabs/vim-backbone'
 " Ruby
 NeoBundle 'tpope/vim-rails'
+NeoBundle 'basyura/unite-rails'
 
 " Other
 NeoBundle 'honza/vim-snippets'
@@ -494,6 +496,14 @@ source $VIMRUNTIME/macros/matchit.vim
 "}}}
 
 " -----------------------------------------------------------------------
+" switch.vim: {{{
+nnoremap - :Switch<CR>
+
+" TODO: customization
+" let g:switch_custom_definitions = []
+"}}}
+
+" -----------------------------------------------------------------------
 " project.vim: {{{
 "
 
@@ -738,11 +748,13 @@ nnoremap <silent> ,irh :VimShell iexe rhino<CR>
 
 " -----------------------------------------------------------------------
 " jshint, syntastic: {{{
-
 let g:syntastic_mode_map = {
-\ "mode" : "active",
-\ "active_filetypes" : ["javascript", "json"],
+\ 'mode' : 'active',
+\ 'active_filetypes' : ['javascript', 'json', 'ruby'],
 \}
+" require gem 'rubocop'
+let g:syntastic_ruby_checkers = [ 'rubocop' ]
+let g:syntastic_quiet_warnings = 0
 "}}}
 
 " -----------------------------------------------------------------------
