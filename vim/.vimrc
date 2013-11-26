@@ -78,6 +78,8 @@ NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'othree/javascript-libraries-syntax.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'mklabs/vim-backbone'
+" Ruby
+NeoBundle 'tpope/vim-rails'
 
 " Other
 NeoBundle 'honza/vim-snippets'
