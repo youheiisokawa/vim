@@ -15,16 +15,16 @@ snippet doctypestrict
 
 snippet xhtml
     <html xmlns="http://www.w3.org/1999/xhtml">
-        ${1}
+    ${1}
     </html>
 snippet head
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=${1:utf-8}">
-        <title>${2}</title>
+    <meta http-equiv="content-type" content="text/html; charset=${1:utf-8}">
+    <title>${2}</title>
     <style type="text/css">
-        ${3}
+    ${3}
     </style>
-        ${4}
+    ${4}
     </head>${5}
 
 snippet metaauthor
@@ -96,7 +96,7 @@ snippet blockquote
     ${2}
 snippet link
 abbr    link stylesheet css
-    <link rel="${1:stylesheet}" href="${2}.css" type="text/css" media="${3:screen}" charset="utf-8">${4}
+    <link rel="${1:stylesheet}" href="${2}.css" type="text/css" media="${3:screen}" />${4}
 snippet fav
 abbr    favicon
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" sizes="16x16" href="${1:favicon}.ico" />${2}
@@ -236,3 +236,11 @@ snippet img
 
 snippet div
     <div ${1:id="${2:someid\}"}>${3}</div>${4}
+
+snippet jquery
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="${1:/js/jquery.js}"><\/script>');</script>${2}
+
+snippet $
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="${1:/js/jquery.js}"<\/script>');</script>${2}

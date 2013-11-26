@@ -1,25 +1,15 @@
 snippet doctype5
     <!DOCTYPE html>
 
-snippet doctypeframeset
-    <!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-
-snippet doctypestrict
-    <!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-snippet xhtml
-    <html xmlns="http://www.w3.org/1999/xhtml">
-        ${1}
+snippet html
+    <html lang="ja">
+    ${1}
     </html>
 snippet head
     <head>
-    <meta http-equiv="content-type" content="text/html; charset=${1:utf-8}">
+    <meta charset="UTF-8" />
     <title>${2}</title>
-    <style type="text/css">
+    <style>
     ${3}
     </style>
     ${4}
@@ -154,9 +144,9 @@ snippet dd
     <dd>${1}</dd>${2}
 
 snippet form
-    <form action="" method="">
-    ${1}
-    </form>${2}
+    <form action="${1}" method="${2}">
+    ${3}
+    </form>${4}
 
 snippet inputtext
     <input type="text" name="${1:user}">${2}
@@ -224,8 +214,8 @@ snippet div
 
 snippet jquery
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('${1:/js/jquery.js}');<\/script>${2}
+    <script>window.jQuery || document.write('<script src="${1:/js/jquery.js}"><\/script>');</script>${2}
 
 snippet $
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('${1:/js/jquery.js}');<\/script>${2}
+    <script>window.jQuery || document.write('<script src="${1:/js/jquery.js}"<\/script>');</script>${2}
