@@ -9,7 +9,7 @@ if has('vim_starting')
   if has('win32') || has('win64')
     set runtimepath+=~/vimfiles/bundle/neobundle.vim
     call neobundle#rc(expand('~/vimfiles/bundle/'))
-else
+  else
     set runtimepath+=~/.vim/bundle/neobundle.vim
     call neobundle#rc(expand('~/.vim/bundle/'))
   endif
@@ -18,7 +18,7 @@ endif
 " install plugin
 NeoBundleFetch 'Shougo/neobundle.vim'
 " Original repos on github
-NeoBundle 'Shougo/vimproc', {
+NeoBundle 'Shougo/vimproc.vim', {
 	\ 'build' : {
 	\     'windows' : 'make -f make_mingw64.mak',
 	\     'cygwin' : 'make -f make_cygwin.mak',
@@ -26,11 +26,11 @@ NeoBundle 'Shougo/vimproc', {
 	\     'unix' : 'make -f make_unix.mak'
 	\    },
 	\ }
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/vimshell.vim'
+NeoBundle 'Shougo/neocomplcache.vim'
+NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimfiler'
+NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-fontzoom'
 NeoBundle 'thinca/vim-qfreplace'
@@ -47,6 +47,7 @@ NeoBundle 'kannokanno/unite-todo'
 NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'mattn/multi-vim'
+NeoBundle 'AndrewRadev/switch.vim'
 
 " Colorscheme
 NeoBundle 'nanotech/jellybeans.vim'
@@ -78,6 +79,9 @@ NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'othree/javascript-libraries-syntax.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'mklabs/vim-backbone'
+" Ruby
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'basyura/unite-rails'
 
 " Other
 NeoBundle 'honza/vim-snippets'
@@ -100,6 +104,7 @@ NeoBundle 'L9'
 NeoBundle 'Quich-Filter'
 NeoBundle 'QuickBuf'
 NeoBundle 'project.tar.gz'
+
 "TODO
 "NeoBundle 'AutoClose'
 
@@ -492,6 +497,14 @@ source $VIMRUNTIME/macros/matchit.vim
 "}}}
 
 " -----------------------------------------------------------------------
+" switch.vim: {{{
+nnoremap - :Switch<CR>
+
+" TODO: customization
+" let g:switch_custom_definitions = []
+"}}}
+
+" -----------------------------------------------------------------------
 " project.vim: {{{
 "
 
@@ -552,7 +565,7 @@ vnoremap /g y:Unite grep::-iHRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 "}}}
 
 " -----------------------------------------------------------------------
-" neocomplcache: {{{
+" neocomplcache, neocomplete: {{{
 
 " Use neocomplcache.
 let g:neocomplcache_enable_at_startup = 1
@@ -637,7 +650,7 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " -----------------------------------------------------------------------
 " neosnippet: {{{
 
-let bundle = neobundle#get('neosnippet')
+let bundle = neobundle#get('neosnippet.vim')
 function! bundle.hooks.on_source(bundle)
 "  imap <silent>L <Plug>(neosnippet_jump_or_expand)
 "  smap <silent>L <Plug>(neosnippet_jump_or_expand)
@@ -736,11 +749,13 @@ nnoremap <silent> ,irh :VimShell iexe rhino<CR>
 
 " -----------------------------------------------------------------------
 " jshint, syntastic: {{{
-
 let g:syntastic_mode_map = {
-\ "mode" : "active",
-\ "active_filetypes" : ["javascript", "json"],
+\ 'mode' : 'active',
+\ 'active_filetypes' : ['javascript', 'json', 'ruby'],
 \}
+" require gem 'rubocop'
+let g:syntastic_ruby_checkers = [ 'rubocop' ]
+let g:syntastic_quiet_warnings = 0
 "}}}
 
 " -----------------------------------------------------------------------
