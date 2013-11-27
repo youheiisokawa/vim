@@ -43,7 +43,11 @@ NeoBundle 'kannokanno/unite-todo'
 NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'mattn/multi-vim'
+<<<<<<< HEAD
 NeoBundle 'AndrewRadev/switch.vim'
+=======
+" NeoBundle 'AndrewRadev/switch.vim'
+>>>>>>> 03bbc03abb41bb894aa331f2739ab696adeb514c
 
 " Colorscheme
 NeoBundle 'nanotech/jellybeans.vim'
