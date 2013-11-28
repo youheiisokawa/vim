@@ -645,7 +645,7 @@ function! bundle.hooks.on_source(bundle)
 	let g:neocomplete#enable_fuzzy_completion = 1
 
 	" Quick Type
-	let g:neocomplete#skip_completion_time = '0.3'
+	" let g:neocomplete#skip_completion_time = '0.3'
 
 	" Set minimun syntax keyword length.
 	let g:neocomplete#sources#syntax#min_syntax_length = 3
@@ -657,8 +657,8 @@ function! bundle.hooks.on_source(bundle)
 	let g:neocomplete#min_keyword_length = 3
 
 	" For auto select.
-	let g:neocomplete#enable_complete_select = 1
-	let g:neocomplete#enable_auto_select = 1
+	let g:neocomplete#enable_complete_select = 0
+	let g:neocomplete#enable_auto_select = 0
 	let g:neocomplete#enable_refresh_always = 0
 	" TODO completeopt!
 	if g:neocomplete#enable_complete_select
@@ -716,7 +716,7 @@ function! bundle.hooks.on_source(bundle)
 		\ 'VimFiler': 'vimfiler#complete',
 		\ 'Vinarise': 'vinarise#complete',
 		\}
-	call neocomplete#custom#source('lock', 'min_pattern_length', 4)
+	call neocomplete#custom#source('look', 'min_pattern_length', 4)
 
 
 	" Plugin key-mappings. {{{
