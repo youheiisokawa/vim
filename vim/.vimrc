@@ -337,6 +337,7 @@ nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+
 " 検索時、「/」の入力をエスケープする
 "cnoremap / getcmdtype() == '/' ? '\/': '/'
 " ウィンドウ分割時にウィンドウサイズを調節する。Shiftキー ＋ 矢印キー
@@ -344,15 +345,18 @@ nnoremap <silent> <S-Left>  :5wincmd <<CR>
 nnoremap <silent> <S-Right> :5wincmd ><CR>
 nnoremap <silent> <S-Up>    :5wincmd -<CR>
 nnoremap <silent> <S-Down>  :5wincmd +<CR>
+
 " バッファの一覧・移動・削除。QuickBuf使うまでもないときに
 "nnoremap bb :b#<CR>
 nnoremap bp :bprevious<CR>
 nnoremap bn :bnext<CR>
 nnoremap bd :bdelete<CR>
+
 " 「最後に編集したテキスト」を選択するキーマップ
 nnoremap gc '[v']
 vnoremap gc :<C-u>normal gc<CR>
 onoremap gc :<C-u>normal gc<CR>
+
 " 表示中のバッファをVimスクリプトとみなして再読み込み
 nnoremap <Space>r :<C-u>execute "source " expand("%:p")<CR>
 
@@ -386,14 +390,19 @@ onoremap j<Space> j
 noremap <C-c> <Nop>
 inoremap <C-c> <Nop>
 
-" Encode
+" Encode change
 command! -bang -nargs=? Utf8 edit<bang> ++enc=utf-8 <args>
 command! -bang -nargs=? Sjis edit<bang> ++enc=sjis <args>
 command! -bang -nargs=? Euc edit<bang> ++enc=euc-jp <args>
 
+" Change mode
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 cnoremap <Leader><Leader> ~/
+
+" Visual mode
+vnoremap < <gv
+vnoremap > >gv
 
 " 現在のファイルをブラウザで開く
 noremap <F12> :silent ! start chrome.exe "%:p"<CR>
