@@ -400,7 +400,7 @@ cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 cnoremap <Leader><Leader> ~/
 
-" Visual mode
+" Visual mode indent
 vnoremap < <gv
 vnoremap > >gv
 
