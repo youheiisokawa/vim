@@ -1075,13 +1075,14 @@ nnoremap <silent> ,irh :VimShell iexe rhino<CR>
 "}}}
 
 " -----------------------------------------------------------------------
-" jshint, syntastic: {{{
+" syntastic: {{{
 let g:syntastic_mode_map = {
 \ 'mode' : 'active',
 \ 'active_filetypes' : ['javascript', 'json', 'ruby'],
 \}
+
 " require gem 'rubocop'
-let g:syntastic_ruby_checkers = [ 'rubocop' ]
+let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_quiet_warnings = 0
 "}}}
 
