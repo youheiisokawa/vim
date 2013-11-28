@@ -1,4 +1,3 @@
-
 filetype off
 
 " -----------------------------------------------------------------------
@@ -45,6 +44,8 @@ NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'mattn/multi-vim'
 NeoBundle 'AndrewRadev/switch.vim'
+NeoBundle 'koron/chalice'
+NeoBundle 'ynkdir/vim-funlib'
 
 " Colorscheme
 NeoBundle 'nanotech/jellybeans.vim'
@@ -81,7 +82,7 @@ NeoBundle 'mklabs/vim-backbone'
 " Coffee Script
 NeoBundle 'kchmck/vim-coffee-script'
 
-" Ruby
+" Ruby on Rails
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'basyura/unite-rails'
 
@@ -1187,6 +1188,49 @@ let g:user_emmet_settings = {
 \	'javascript': {
 \		
 \	},
+\	'php': {
+\		'extends': 'html',
+\		'filters': 'html,c'
+\	},
+\	'erb': {
+\		'extends': 'html',
+\		'filters': 'html,c'
+\	},
 \}
 
+"}}}
+
+" -----------------------------------------------------------------------
+" Functions: {{{
+" URL encode, decode (require: alice.vim)
+function! s:URLEncode()
+    let l:line = getline('.')
+    let l:encoded = AL_urlencode(l:line)
+    call setline('.', l:encoded)
+endfunction
+
+function! s:URLDecode()
+    let l:line = getline('.')
+    let l:encoded = AL_urldecode(l:line)
+    call setline('.', l:encoded)
+endfunction
+command! -nargs=0 -range URLEncode :<line1>,<line2>call <SID>URLEncode()
+command! -nargs=0 -range URLDecode :<line1>,<line2>call <SID>URLDecode()
+
+" Generate Random (require: vim-funlib)
+function! Random(a, b)
+	return random#randint(a:a, a:b)
+endfunction
+
+function! MD5(data)
+	return hashlib#md5(a:data)
+endfunction
+
+function! Sha1(data)
+	return hashlib#sha1(a:data)
+endfunction
+
+function! Sha256(data)
+	return hashlib#sha256(a:data)
+endfunction
 "}}}
