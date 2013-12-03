@@ -112,17 +112,15 @@ NeoBundle 'Quich-Filter'
 NeoBundle 'QuickBuf'
 NeoBundle 'project.tar.gz'
 
-"TODO
-"NeoBundle 'AutoClose'
-
 
 " それ以外にある git リポジトリにあるプラグイン
 " Non git repos
 "
-" //TODO
+" TODO
+"NeoBundle 'AutoClose'
 "NeoBundle 'tyru/operator-html-escape.vim'
-" NeoBundle 'kana/vim-smartchr'
-" textobj-indent と textmanip
+"NeoBundle 'kana/vim-smartchr'
+"textobj-indent, textmanip
 
 
 " TODO: Neobundle configurations.
@@ -149,9 +147,35 @@ call neobundle#config('vimsnippet.vim', {
 	\     'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
 	\    },
 	\})
-call neobundle#config('vimfiler', {
+call neobundle#config('vimfiler.vim', {
+	\ 'lazy' : 1,
+	\ 'depends' : 'Shougo/unite.vim',
+	\ 'autoload' : {
+	\     'commands': [
+	\         {
+	\             'name': 'VimFiler',
+	\             'complete': 'customlist,vimfiler#complete',
+	\         },
+	\         {
+	\             'name': 'VimFilerExplorer',
+	\             'complete': 'customlist,vimfiler#complete',
+	\         },
+	\         {
+	\             'name': 'Edit',
+	\             'complete': 'customlist,vimfiler#complete',
+	\         },
+	\         {
+	\             'name': 'Write',
+	\             'complete': 'customlist,vimfiler#complete',
+	\         },
+	\         'Read',
+	\         'Source'
+	\     ],
+	\     'mappings': '<Plug>(vimfiler_',
+	\     'explorer': '1',
+	\    },
 	\})
-call neobundle#config('vimshell', {
+call neobundle#config('vimshell.vim', {
 	\})
 call neobundle#config('vinarise.vim', {
 	\  'lazy': 1,
@@ -168,6 +192,11 @@ filetype plugin indent on
 " Installation check.
 NeoBundleCheck
 
+" Anywhere SID.
+function! s:SID_PREFIX()
+	return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
 " -----------------------------------------------------------------------
 " My setting: {{{
 
@@ -178,7 +207,17 @@ set ruler
 set cmdheight=1
 set laststatus=2
 set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%v%8p
+
+" show title
 set title
+set titlelen=95
+let &titlestring="
+	\ %{expand('%:p:.:~')}%(%m%r%w%)
+	\ %<\(%{".s:SID_PREFIX()."strwidthpart(
+	\ fnamemodify(&filetype ==# 'vimfiler' ?
+	\ substitute(b:vimfiler.current_dir, '.\\zs/$', '', '') : getcwd(), ':~'),
+	\ &columns-len(expand('%:p:.:~')))}\) - VIM"
+
 set linespace=1
 set showcmd
 set wildmenu
@@ -613,7 +652,7 @@ endif
 "}}}
 
 " -----------------------------------------------------------------------
-" unite: {{{
+" unite.vim: {{{
 " The prefix key
 nnoremap [unite] <Nop>
 nmap <Leader>f [unite]
@@ -650,7 +689,7 @@ vnoremap /g y:Unite grep::-iHRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 "}}}
 
 " -----------------------------------------------------------------------
-" neocomplete: {{{
+" neocomplete.vim: {{{
 " Use neocomplete
 let g:neocomplete#enable_at_startup = 1
 
@@ -893,7 +932,7 @@ endfunction
 "}}}
 
 " -----------------------------------------------------------------------
-" neocomplcache: {{{
+" neocomplcache.vim: {{{
 " Use neocomplcache.
 let g:neocomplcache_enable_at_startup = 0
 
@@ -973,7 +1012,7 @@ unlet bundle
 "}}}
 "
 " -----------------------------------------------------------------------
-" neosnippet: {{{
+" neosnippet.vim: {{{
 
 let bundle = neobundle#get('neosnippet.vim')
 function! bundle.hooks.on_source(bundle)
@@ -1012,12 +1051,88 @@ nnoremap <silent> [Window]f              :<C-u>Unite neosnippet/user neosnippet/
 "}}}
 
 " -----------------------------------------------------------------------
-" vimfiler: {{{
-"
+" vimfiler.vim: {{{
+
+if neobundle#tap('vimfiler.vim')
+	nnoremap <silent> [Space]fi :<C-u>VimFiler -find<CR>
+	nnoremap [Space]ff :<C-u>VimFilerExplorer<CR>
+	
+	function! neobundle#tapped.hooks.on_source(bundle)
+		let g:vimfiler_enable_clipboard = 0
+		" disabled 'safemode'
+		let g:vimfiler_safe_mode_by_default = 0
+
+		let g:vimfiler_as_default_explorer = 1
+		let g:vimfiler_detect_drives = s:is_windows ? [
+		\ 'C:/', 'D:/', 'E:/', 'F:/', 'G:/', 'H:/', 'I;/',
+		\ 'J:/', 'K:/', 'L:/', 'M:/', 'N:/'] :
+		\ split(glob('/mnt/*'), '\n') + split(glob('/media/*'), '\n') +
+		\ split(glob('/Users/*'), '\n')
+
+		" %p : full path
+		" %d : current directory
+		" %f : filename
+		" %F : filename removed extentions
+		" %* : filenames
+		" %# : filenames fullpath
+		let g:vimfiler_sendto = {
+			\ 'unzip': 'unzip %f',
+			\ 'zip': 'zip -r %F.zip %*',
+			\ 'Inkscape': 'inkspace',
+			\ 'GIMP': 'fimp %*',
+			\ 'gedit': 'gedit',
+		}
+
+		if s:is_windows
+			" Use trashbox
+			let g:unite_kind_file_use_trashbox = 1
+		else
+			" Like Textmate icons.
+			let g:vimfiler_tree_leaf_icon = ' '
+			let g:vimfiler_tree_opened_icon = '▾'
+			let g:vimfiler_tree_closed_icon = '▸'
+			let g:vimfiler_file_icon = ' '
+			let g:vimfiler_readonly_file_icon = '✗'
+			let g:vimfiler_marked_file_icon = '✓'
+		endif
+
+		let g:vimfiler_quick_look_command =
+			\ s:is_windows ? 'maComfort.exe -ql' :
+			\ s:is_mac ? 'qlmanage -p' : 'gloobus-preview'
+
+		autocmd MyAutoCmd FileType vimfiler call s:vimfiler_my_settings()
+		function! s:vimfiler_my_settings() "{{{
+			call vimfiler#set_execute_file('vim', ['vim', 'notepad'])
+			call vimfiler#set_execute_file('txt', 'vim')
+			
+			" Overwrite settings
+			nnoremap <silent><buffer> J
+				\ <C-u>:Unite -buffer-name=files -default-action=lcd directory_mru<CR>
+			" Call sendto
+			" nnoremap <buffer> - <C-u>:Unite sendto<CR>
+			" setlocal cursorline
+
+			nmap <buffer> O <Plug>(fimviler_sync_with_another_vimfiler)
+			nnoremap <silent><buffer><expr> gy vimfiler#do_action('tabopen')
+			nmap <buffer> p <Plug>(vimfiler_quick_look)
+			nmap <buffer> <Tab> <Plug>(vimfiler_switch_to_other_window)
+
+			" Migemo search.
+			if !empty(unite#get_filters('#atcher_migemo'))
+				nnoremap <silent><buffer><expr> / line('$') > 10000 ? 'g/' :
+							\ ":\<C-u>Unite -buffer-name=search -start-inseart line-migemo\<CR>"
+			endif
+
+		endfunction "}}}
+	endfunction
+
+	call neobundle#untap()
+endif
+
 " disabled 'safemode'
-let g:vimfiler_safe_mode_by_default = 0
+" let g:vimfiler_safe_mode_by_default = 0
 " default filer config
-let g:vimfiler_as_default_explorer = 1
+" let g:vimfiler_as_default_explorer = 1
 " default open action
 let g:vimfiler_edit_action = 'tabopen'
 
@@ -1028,7 +1143,7 @@ set write
 "}}}
 
 " -----------------------------------------------------------------------
-" vimshell {{{
+" vimshell.vim {{{
 "
 " ,is: シェルを起動
 nnoremap <silent> ,is :VimShell<CR>
