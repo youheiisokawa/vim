@@ -1,3 +1,7 @@
+" -----------------------------------------------------------------------
+" .vimrc <Youhei Isokawa>
+" -----------------------------------------------------------------------
+
 let s:is_windows = has('win16') || has('win32') || has('win64')
 let s:is_cygwin = has('win32unix')
 let s:is_mac = !s:is_windows && !s:is_cygwin &&
@@ -7,11 +11,17 @@ let s:is_sudo = $SUDO_USER != '' && $USER !=# $SUDO_USER &&
 	\ $HOME !=# expand('~'.$USER) &&
 	\ $HOME ==# expand('~'.$SUDO_USER)
 
-filetype off
+" Anywhere SID.
+function! s:SID_PREFIX()
+	return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
 
 " -----------------------------------------------------------------------
 " neobundle.vim: {{{
 "
+filetype off
+
 if has('vim_starting')
   set nocompatible
 
@@ -185,6 +195,20 @@ call neobundle#config('vimfiler.vim', {
 	\    },
 	\})
 call neobundle#config('vimshell.vim', {
+	\ 'lazy': 1,
+	\ 'autoload': {
+	\   'commands': [
+	\      {
+	\         'name': 'VimShell',
+	\         'complete': 'customlist,vimshell#complete',
+	\      },
+	\      'VimShellExecute',
+	\      'VimShellInteractive',
+	\      'VimShellTerminal',
+	\      'VimShellPop'
+	\   ]
+	\ },
+	\ 'mappings': '<Plug>(vimshell_',
 	\})
 call neobundle#config('vinarise.vim', {
 	\  'lazy': 1,
@@ -194,17 +218,14 @@ call neobundle#config('vinarise.vim', {
 	\    }]
 	\  }
 	\})
-"}}}
+
 
 filetype plugin indent on
 
 " Installation check.
 NeoBundleCheck
 
-" Anywhere SID.
-function! s:SID_PREFIX()
-	return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-endfunction
+"}}}
 
 " -----------------------------------------------------------------------
 " settings: {{{
@@ -256,7 +277,6 @@ command! -nargs=1 -bang -bar -complete=file Rename sav<bang> <args> | call delet
 " tab
 set tabstop=4
 "set softtabstop=4
-"?????
 "set expandtab
 set smarttab
 set shiftwidth=4
@@ -274,7 +294,11 @@ set nosmartindent
 set list
 
 " listで表示される文字のフォーマットを指定する
-set listchars=eol:$,tab:»\ ,trail:_,extends:<
+if s:is_windows
+	set listchars=eol:$,tab:>\ ,extends:<
+else
+	set listchars=eol:$,tab:»\ ,trail:_,extends:<
+endif
 "set listchars=eol:$,tab:>\ ,extends:<
 "set lcs=tab:>-,eol:$,trail:_,extends:\
 "set listchars=tab:>-
