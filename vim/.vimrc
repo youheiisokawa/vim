@@ -441,7 +441,7 @@ nnoremap <Space>v :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGV
 
 " Easy escape. {{{
 inoremap jj <ESC>
-cnoremap <expr> j getcmdline()[getcmdpos()-2 ==# 'j' ? "\<BS>\<C-c>" : 'j'
+" cnoremap <expr> j getcmdline()[getcmdpos()-2 ==# 'j' ? "\<BS>\<C-c>" : 'j'
 onoremap jj <ESC>
 
 inoremap j<Space> j
