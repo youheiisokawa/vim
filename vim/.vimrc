@@ -1,3 +1,12 @@
+let s:is_windows = has('win16') || has('win32') || has('win64')
+let s:is_cygwin = has('win32unix')
+let s:is_mac = !s:is_windows && !s:is_cygwin &&
+	\ (has('mac') || has('macunix') || has('gui_macvim') ||
+	\ (!executable('xdg-open') && system('uname') =~? '^darwin'))
+let s:is_sudo = $SUDO_USER != '' && $USER !=# $SUDO_USER &&
+	\ $HOME !=# expand('~'.$USER) &&
+	\ $HOME ==# expand('~'.$SUDO_USER)
+
 filetype off
 
 " -----------------------------------------------------------------------
@@ -6,7 +15,7 @@ filetype off
 if has('vim_starting')
   set nocompatible
 
-  if has('win32') || has('win64')
+  if s:is_windows
     set runtimepath+=~/vimfiles/bundle/neobundle.vim
     call neobundle#rc(expand('~/vimfiles/bundle/'))
   else
@@ -198,10 +207,9 @@ function! s:SID_PREFIX()
 endfunction
 
 " -----------------------------------------------------------------------
-" My setting: {{{
+" settings: {{{
 
 " display
-
 set number
 set ruler
 set cmdheight=1
@@ -262,7 +270,6 @@ set cindent
 " 自動的に括弧を見てインデントしてくれる機能を使わない
 set nosmartindent
 
-
 " tab & line end string display on
 set list
 
@@ -273,7 +280,6 @@ set listchars=eol:$,tab:»\ ,trail:_,extends:<
 "set listchars=tab:>-
 "scriptencoding utf-8
 "set listchars=tab:≫\ ,trail:-,eol:$
-
 
 " Enable folding.
 set foldenable
@@ -312,32 +318,35 @@ nnoremap zh zH
 noremap gh gT
 noremap gl gt
 
-" Anywhere SID.
-function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-endfunction
-
 " Set tabline.
 function! s:my_tabline()  "{{{
-  let s = ''
-  for i in range(1, tabpagenr('$'))
-    let bufnrs = tabpagebuflist(i)
-    let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
-    let no = i  " display 0-origin tabpagenr.
-    let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
-    let title = fnamemodify(bufname(bufnr), ':t')
-    let title = '[' . title . ']'
-    let s .= '%'.i.'T'
-    let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
-    let s .= no . ':' . title
-    let s .= mod
-    let s .= '%#TabLineFill# '
-  endfor
-  let s .= '%#TabLineFill#%T%=%#TabLine#'
-  return s
+	let s = ''
+	for i in range(1, tabpagenr('$'))
+		let bufnrs = tabpagebuflist(i)
+		let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+		let no = i  " display 0-origin tabpagenr.
+		let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+		let title = fnamemodify(bufname(bufnr), ':t')
+		let title = '[' . title . ']'
+		let s .= '%'.i.'T'
+		let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+		let s .= no . ':' . title
+		let s .= mod
+		let s .= '%#TabLineFill# '
+	endfor
+	let s .= '%#TabLineFill#%T%=%#TabLine#'
+	return s
 endfunction "}}}
 let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
 set showtabline=2 " 常にタブラインを表示
+
+" 外部grep
+set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m,%f
+set grepprg=grep\ -nH
+"}}}
+
+" -----------------------------------------------------------------------
+" key mappings: {{{
 
 " The prefix key.
 nnoremap    [Tag]   <Nop>
@@ -345,7 +354,7 @@ nmap    t [Tag]
 
 " Tab jump
 for n in range(1, 9)
-  execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+	execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
 endfor
 
 " tc 新しいタブを一番右に作る
@@ -364,7 +373,7 @@ noremap k gk
 noremap gj j
 noremap gk k
 
-" <CR>
+" New line
 inoremap <C-CR> <ESC>o
 inoremap <S-CR> <ESC>o
 inoremap <C-S-CR> <ESC>O
@@ -408,6 +417,7 @@ nnoremap <Space>v :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGV
 
 " Easy escape. {{{
 inoremap jj <ESC>
+cnoremap <expr> j getcmdline()[getcmdpos()-2 ==# 'j' ? "\<BS>\<C-c>" : 'j'
 onoremap jj <ESC>
 
 inoremap j<Space> j
@@ -418,7 +428,7 @@ onoremap j<Space> j
 "inoremap { {}<LEFT>
 "inoremap {<CR> {<CR>}<ESC>O
 "inoremap {{ {
-""inoremap {} {}
+"inoremap {} {}
 "inoremap <expr> } strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
 "inoremap ( ()<LEFT>
 "inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
@@ -426,8 +436,8 @@ onoremap j<Space> j
 "inoremap <expr> ] strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 
 " practice <Esc>
-noremap <C-c> <Nop>
-inoremap <C-c> <Nop>
+" noremap <C-c> <Nop>
+" inoremap <C-c> <Nop>
 
 " Encode change
 command! -bang -nargs=? Utf8 edit<bang> ++enc=utf-8 <args>
@@ -439,9 +449,22 @@ cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 cnoremap <Leader><Leader> ~/
 
-" Visual mode indent
-vnoremap < <gv
-vnoremap > >gv
+" Visual mode keymappings {{{
+" <Tab>: indent
+xnoremap <TAB> >
+" <S-Tab>: unindent
+xnoremap <S-Tab> <
+
+" indent
+nnoremap > >>
+nnoremap < <<
+xnoremap > >gv
+xnoremap < <gv
+
+if has('clipboard')
+	xnoremap <silent> y "*y:let [@+,@"]=[@*,@*]<CR>
+endif
+" }}}
 
 " 現在のファイルをブラウザで開く
 noremap <F12> :silent ! start chrome.exe "%:p"<CR>
@@ -460,10 +483,33 @@ inoremap <silent> <C-[> <ESC>
 " 「日本語入力固定モード」切替
 inoremap <silent> <C-j> <C-^>
 
-" 外部grep
-set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m,%f
-set grepprg=grep\ -nH
-"}}}
+" Improved increment.
+nmap <C-a> <SID>(increment)
+nmap <C-x> <SID>(decrement)
+nnoremap <silent> <SID>(increment)    :AddNumbers 1<CR>
+nnoremap <silent> <SID>(decrement)   :AddNumbers -1<CR>
+command! -range -nargs=1 AddNumbers
+	\ call s:add_numbers((<line2>-<line1>+1) * eval(<args>))
+function! s:add_numbers(num)
+	let prev_line = getline('.')[: col('.')-1]
+	let next_line = getline('.')[col('.') :]
+	let prev_num = matchstr(prev_line, '\d\+$')
+	if prev_num != ''
+		let next_num = matchstr(next_line, '^\d\+')
+		let new_line = prev_line[: -len(prev_num)-1] .
+			\ printf('%0'.len(prev_num . next_num).'d',
+			\    max([0, prev_num . next_num + a:num])) . next_line[len(next_num):]
+	else
+		let new_line = prev_line . substitute(next_line, '\d\+',
+			\ "\\=printf('%0'.len(submatch(0)).'d',
+			\         max([0, submatch(0) + a:num]))", '')
+	endif
+	
+	if getline('.') !=# new_line
+		call setline('.', new_line)
+	endif
+endfunction
+" }}}
 
 " -----------------------------------------------------------------------
 " augroups: {{{
@@ -485,7 +531,7 @@ augroup MyAutoCmd
 	autocmd QuickFixCmdPost grep cw
 
 	" read templetes
-	if has('win32') || has('win64')
+	if s:is_windows
 		autocmd BufNewFile *.html 0r ~/vimfiles/templates/tmpl.html
 		autocmd BufNewFile *.css 0r ~/vimfiles/templates/css/blank.css
 		autocmd BufNewFile *.js 0r ~/vimfiles/templates/js/tmpl.js
@@ -536,7 +582,7 @@ augroup MyAutoCmd
     autocmd BufRead,BufNewFile *.sass setfiletype sass
 
 	" autocmd FileType javascript,coffee
-		" \ if has('win32') || has('win64')
+		" \ if s:is_windows
 		" \ | :set dictionary=$HOME/vimfiles/dict/javascript.dict,$HOME/vimfiles/dict/jQuery.dict
 		" \ else
 		" \ | :set dictionary=$HOME/.vim/dict/javascript.dict,$HOME/.vim/dict/jQuery.dict
@@ -549,7 +595,7 @@ augroup MyAutoCmd
 augroup END
 
 " .vimrc auto load
-if !has('gui_running') && !(has('win32') || has('win64'))
+if !has('gui_running') && !s:is_windows
 	" .vimrcの再読込時にも色が変化するようにする
 	autocmd MyAutoCmd BufWritePost $MYVIMRC nested source $MYVIMRC
 else
@@ -1038,7 +1084,7 @@ function! bundle.hooks.on_source(bundle)
   " inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
   " Snippets file dir
-  if has('win32') || has('win64')
+  if s:is_windows
   	let g:neosnippet#snippets_directory = '~/vimfiles/snippets'
   else
   	let g:neosnippet#snippets_directory = '~/.vim/snippets'
@@ -1054,10 +1100,11 @@ nnoremap <silent> [Window]f              :<C-u>Unite neosnippet/user neosnippet/
 " vimfiler.vim: {{{
 
 if neobundle#tap('vimfiler.vim')
-	nnoremap <silent> [Space]fi :<C-u>VimFiler -find<CR>
-	nnoremap [Space]ff :<C-u>VimFilerExplorer<CR>
+	nnoremap <silent> <Space>fi :<C-u>VimFiler -find<CR>
+	nnoremap <Space>ff :<C-u>VimFilerExplorer<CR>
 	
 	function! neobundle#tapped.hooks.on_source(bundle)
+		" disabled 'clipboard'
 		let g:vimfiler_enable_clipboard = 0
 		" disabled 'safemode'
 		let g:vimfiler_safe_mode_by_default = 0
@@ -1075,13 +1122,13 @@ if neobundle#tap('vimfiler.vim')
 		" %F : filename removed extentions
 		" %* : filenames
 		" %# : filenames fullpath
-		let g:vimfiler_sendto = {
-			\ 'unzip': 'unzip %f',
-			\ 'zip': 'zip -r %F.zip %*',
-			\ 'Inkscape': 'inkspace',
-			\ 'GIMP': 'fimp %*',
-			\ 'gedit': 'gedit',
-		}
+		" let g:vimfiler_sendto = {
+		" 	\ 'unzip': 'unzip %f',
+		" 	\ 'zip': 'zip -r %F.zip %*',
+		" 	\ 'Inkscape': 'inkspace',
+		" 	\ 'GIMP': 'fimp %*',
+		" 	\ 'gedit': 'gedit',
+		" }
 
 		if s:is_windows
 			" Use trashbox
@@ -1122,6 +1169,12 @@ if neobundle#tap('vimfiler.vim')
 				nnoremap <silent><buffer><expr> / line('$') > 10000 ? 'g/' :
 							\ ":\<C-u>Unite -buffer-name=search -start-inseart line-migemo\<CR>"
 			endif
+
+			" One key file operation.
+			" nmap <buffer> c <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_copy_file)
+			" nmap <buffer> m <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_move_file)
+			" nmap <buffer> d <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
+
 
 		endfunction "}}}
 	endfunction
@@ -1327,6 +1380,92 @@ let g:user_emmet_settings = {
 
 " -----------------------------------------------------------------------
 " Functions: {{{
+function! s:strchars(str)
+	return len(substitute(a:str, '.', 'x', 'g'))
+endfunction
+
+function! s:strwidthpart(str, width)
+	if a:width <= 0
+		return ''
+	endif
+
+	let ret = a:str
+	let width = s:wcswidth(a:str)
+
+	while width > a:width
+		let char = matchstr(ret, '.$')
+		let ret = ret[: -1 - len(char)]
+		let width -= s:wcswidth(char)
+	endwhile
+	
+	return ret
+endfunction
+
+function! s:strwidthpart_reverse(str, width)
+	if a:width <= 0
+		return ''
+	endif
+
+	let ret = a:str
+	let width = s:wcswidth(a:str)
+
+	while width > a:width
+		let char = matchstr(ret, '^.')
+		let ret = ret[len(char) :]
+		let width -= s:wcswidth(char)
+	endwhile
+	
+	return ret
+endfunction
+
+if v:version >= 703
+	" Use builtin function.
+	function! s:wcswidth(str)
+		return strwidth(a:str)
+	endfunction
+else
+	function! s:wcswidth(str)
+		if a:str =~# '^[\x00-\x7f]*$'
+			return strlen(a:str)
+		end
+
+		let mx_first = '^\(.\)'
+		let str = a:str
+		let width = 0
+		while 1
+			let ucs = char2nr(substitute(str, mx_first, '\1', ''))
+			if ucs == 0
+				break
+			endif
+			let width += s:_wcwidth(ucs)
+			let str = substitute(str, mx_first, '', '')
+		endwhile
+		return width
+	endfunction
+
+	" UTF-8 only.
+	function! s:_wcwidth(ucs)
+		let ucs = a:ucs
+		if (ucs >= 0x1100
+				\  && (ucs <= 0x115f
+				\  || ucs == 0x2329
+				\  || ucs == 0x232a
+				\  || (ucs >= 0x2e80 && ucs <= 0xa4cf
+				\      && ucs != 0x303f)
+				\  || (ucs >= 0xac00 && ucs <= 0xd7a3)
+				\  || (ucs >= 0xf900 && ucs <= 0xfaff)
+				\  || (ucs >= 0xfe30 && ucs <= 0xfe6f)
+				\  || (ucs >= 0xff00 && ucs <= 0xff60)
+				\  || (ucs >= 0xffe0 && ucs <= 0xffe6)
+				\  || (ucs >= 0x20000 && ucs <= 0x2fffd)
+				\  || (ucs >= 0x30000 && ucs <= 0x3fffd)
+				\  ))
+			return 2
+		endif
+		return 1
+	endfunction
+endif
+
 " URL encode, decode (require: alice.vim)
 function! s:URLEncode()
     let l:line = getline('.')
