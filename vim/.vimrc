@@ -402,13 +402,23 @@ inoremap <C-CR> <ESC>o
 inoremap <S-CR> <ESC>o
 inoremap <C-S-CR> <ESC>O
 
+" Move window
+nnoremap <silent> <Space>h <C-w>h
+nnoremap <silent> <Space>j <C-w>j
+nnoremap <silent> <Space>k <C-w>k
+nnoremap <silent> <Space>l <C-w>l
+
+" Select All
+nnoremap <silent> <Space>a ggVG
+
+
 " 検索結果に移動した時、その位置を画面の中央に変更
 nnoremap n nzz
 nnoremap N Nzz
-nnoremap * *zz
-nnoremap # #zz
-nnoremap g* g*zz
-nnoremap g# g#zz
+" nnoremap * *zz
+" nnoremap # #zz
+" nnoremap g* g*zz
+" nnoremap g# g#zz
 
 " 検索時、「/」の入力をエスケープする
 "cnoremap / getcmdtype() == '/' ? '\/': '/'
@@ -432,7 +442,6 @@ onoremap gc :<C-u>normal gc<CR>
 " 表示中のバッファをVimスクリプトとみなして再読み込み
 nnoremap <Space>r :<C-u>execute "source " expand("%:p")<CR>
 
-" vimrc
 " edit "_vimrc", "_gvimrc"
 nnoremap <silent> <Space>ev  :<C-u>edit $MYVIMRC<CR>
 nnoremap <silent> <Space>eg  :<C-u>edit $MYGVIMRC<CR>
@@ -506,6 +515,11 @@ inoremap <silent> <C-[> <ESC>
 
 " 「日本語入力固定モード」切替
 inoremap <silent> <C-j> <C-^>
+
+" date
+inoremap <Leader>date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
+inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
+inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
 
 " Improved increment.
 nmap <C-a> <SID>(increment)
@@ -1360,7 +1374,7 @@ vmap ,a <Plug>NERDCommenterAppend
 
 " -----------------------------------------------------------------------
 " emmet.vim: {{{
-" let g:user_emmet_leader_key = '<c-y>'
+" let g:user_emmet_leader_key = '<c-enter>'
 
 let g:user_emmet_settings = {
 \	'lang': 'ja',
