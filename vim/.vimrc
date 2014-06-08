@@ -367,6 +367,9 @@ set showtabline=2 " 常にタブラインを表示
 " 外部grep
 set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m,%f
 set grepprg=grep\ -nH
+
+" undofileを作らない
+set noundofile
 "}}}
 
 " -----------------------------------------------------------------------
