@@ -1379,7 +1379,8 @@ vmap ,a <Plug>NERDCommenterAppend
 
 " -----------------------------------------------------------------------
 " emmet.vim: {{{
-" let g:user_emmet_leader_key = '<c-enter>'
+let g:user_emmet_leader_key = '<d-enter>'
+let g:user_emmet_expandabbr_key = '<d-enter>'
 
 let g:user_emmet_settings = {
 \	'lang': 'ja',
