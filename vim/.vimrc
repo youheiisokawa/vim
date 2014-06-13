@@ -97,6 +97,7 @@ NeoBundle 'walm/jshint.vim'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'othree/javascript-libraries-syntax.vim'
 NeoBundle 'mklabs/vim-backbone'
+NeoBundle 'leafgarland/typescript-vim'
 
 " Coffee Script
 NeoBundle 'kchmck/vim-coffee-script'
@@ -158,7 +159,7 @@ call neobundle#config('neocomplete.vim', {
 	\    'commands': 'NeoCompleteBufferMakeCache',
 	\  }
 	\})
-call neobundle#config('vimsnippet.vim', {
+call neobundle#config('neosnippet.vim', {
 	\ 'lazy' : 1,
 	\ 'autoload' : {
 	\     'insert': 1,
@@ -621,6 +622,7 @@ augroup MyAutoCmd
 
     " for Sass.vim
     autocmd BufRead,BufNewFile *.sass setfiletype sass
+	autocmd BufRead,BufNewFile *.ts set filetype=typescript
 
 	" autocmd FileType javascript,coffee
 		" \ if s:is_windows
@@ -1292,7 +1294,7 @@ let g:syntastic_mode_map = {
 
 " require gem 'rubocop'
 let g:syntastic_ruby_checkers = ['rubocop']
-let g:syntastic_quiet_warnings = 0
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 "}}}
 
 " -----------------------------------------------------------------------
