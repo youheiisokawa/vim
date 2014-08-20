@@ -43,6 +43,7 @@ NeoBundle 'Shougo/vimshell.vim'
 " NeoBundle 'Shougo/neocomplcache.vim'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'Shougo/vinarise.vim'
@@ -123,6 +124,7 @@ NeoBundle "majutsushi/tagbar"
 NeoBundle 'tpope/vim-fugitive'
 
 " Other
+NeoBundle 'soramugi/auto-ctags.vim'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'scrooloose/syntastic.git'
 NeoBundle 'Lokaltog/vim-powerline'
@@ -413,6 +415,20 @@ map <silent> [Tag]x :tabclose<CR>
 map <silent> [Tag]l :tabnext<CR>
 " tp 前のタブ
 map <silent> [Tag]h :tabprevious<CR>
+
+" Tab change
+map <F2> <ESC>:bprevious<CR>
+map <F3> <ESC>:bnext<CR>
+"map <F4> <ESC>:bwipe<CR>
+map <F4> <ESC>:Unite
+map <F5> <ESC>:tabprevious<CR>
+map <F6> <ESC>:tabnext<CR>
+map <F7> <ESC>:tabnew<CR>
+map <F8> <ESC>:tabclose<CR>
+"map <F9> <ESC>:VimFilerExplorer<CR>
+"map <F9> <ESC>:Kwbd<CR>
+"map <S-F9> <ESC>:FKwbd<CR>
+map <F10> <ESC><Plug>ToggleProject<CR>
 
 " Copy/Paste/Cut
 " noremap YY "+y<CR>
@@ -1508,7 +1524,8 @@ let Grep_Default_Options = '-IR'
 
 " -----------------------------------------------------------------------
 " Tagbar: {{{
-" nmap <silent> <F4> :TagbarToggle<CR>
+" http://qiita.com/FiNGAHOLiC/items/7545c3a7ec6a52d294bf
+nmap <silent> <F9> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 let g:tagbar_type_ruby = {
     \ 'kinds' : [
@@ -1520,9 +1537,18 @@ let g:tagbar_type_ruby = {
         \ 'F:singleton methods'
     \ ]
 \ }
+nnoremap <F3> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
 "}}}
 
 let g:javascript_enable_domhtmlcss = 1
+
+" -----------------------------------------------------------------------
+" auto-ctags.vim: {{{
+let g:auto_ctags = 1
+let g:auto_ctags_directory_list = ['.git', '.svn']
+let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
+let g:auto_ctags_filetype_mode = 1
+"}}}
 
 " -----------------------------------------------------------------------
 " Functions: {{{
@@ -1657,7 +1683,7 @@ function! TrimWhiteSpace()
 endfunction
 "}}}
 
-"" Include user's local vim config
+" Include user's local vim config
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif

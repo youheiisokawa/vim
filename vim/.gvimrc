@@ -16,9 +16,9 @@ set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V
 "set guifont=Consolas:h11
 "set guifontwide=MS_Gothic:h11:cSHIFTJIS
 if (has('gui_macvim'))
-	set guifont=Consolas:h15
+	set guifont=Consolas:h17
 	" set guifont=Ricty:h15
-	set guifontwide=Ricty:h15
+	set guifontwide=Ricty:h17
 else
 	set guifont=Consolas:h11
 	set guifontwide=MS_Gothic:h11:cSHIFTJIS
@@ -67,17 +67,3 @@ command! ChgencUtf8 set fenc=utf-8
 command! ChgencJis ChgencIso2022jp
 command! ChgencSjis set fenc=cp932
 
-" Tab change
-map <F2> <ESC>:bprevious<CR>
-map <F3> <ESC>:bnext<CR>
-"map <F4> <ESC>:bwipe<CR>
-map <F4> <ESC>:Unite
-map <F9> <ESC>:VimFilerExplorer<CR>
-map <F10> <ESC><Plug>ToggleProject<CR>
-"map <F9> <ESC>:Kwbd<CR>
-"map <S-F9> <ESC>:FKwbd<CR>
-" Gui tab
-map <F5> <ESC>:tabprevious<CR>
-map <F6> <ESC>:tabnext<CR>
-map <F7> <ESC>:tabnew<CR>
-map <F8> <ESC>:tabclose<CR>
