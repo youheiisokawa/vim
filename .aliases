@@ -1,5 +1,9 @@
 # alias configuration
-#
+
+
+# Application Shortcuts
+alias path='pwd | pbcopy'
+
 # Application Shortcuts
 alias safari='open -g -a safari'
 alias skitch='open -g -a skitch'
