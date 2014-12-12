@@ -1,7 +1,7 @@
 # alias configuration
 
 
-# Application Shortcuts
+# Copy path
 alias path='pwd | pbcopy'
 
 # Application Shortcuts
@@ -23,15 +23,19 @@ alias sci='svn ci'
 alias scim='svn ci -m'
 
 # for git
+alias gad='git add'
 alias gst='git status'
 alias gci='git commit'
 alias gdi='git diff'
 alias gdc='git diff --cached'
-alias gad='git add'
+alias gl='git log'
 
 # for Editor alias
 alias mvim='/Applications/MacVim.app/Contents/MacOS/mvim'
 alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
+
+# Quick gulp start
+alias ready='mvim && gulp serve'
 
 # for ctags
 alias ctags=/usr/local/Cellar/ctags/5.8/bin/ctags
