@@ -40,7 +40,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Original repos on github
 NeoBundle 'Shougo/vimproc.vim'
 NeoBundle 'Shougo/vimshell.vim'
-" NeoBundle 'Shougo/neocomplcache.vim'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -51,12 +50,12 @@ NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-fontzoom'
 NeoBundle 'thinca/vim-qfreplace'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'sheerun/vim-polyglot'
-NeoBundle 'vim-scripts/grep.vim'
-NeoBundle 'vim-scripts/CSApprox'
+"NeoBundle 'kien/ctrlp.vim'
+"NeoBundle 'bling/vim-airline'
+"NeoBundle 'airblade/vim-gitgutter'
+"NeoBundle 'sheerun/vim-polyglot'
+"NeoBundle 'vim-scripts/grep.vim'
+"NeoBundle 'vim-scripts/CSApprox'
 
 " Unite plugin
 NeoBundle 'h1mesuke/unite-outline'
@@ -65,15 +64,6 @@ NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/quicklearn'
 NeoBundle 'thinca/vim-unite-history'
 NeoBundle 'kannokanno/unite-todo'
-
-" Text
-NeoBundle 'kana/vim-smartinput'
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'mattn/multi-vim'
-NeoBundle 'AndrewRadev/switch.vim'
-NeoBundle 'koron/chalice'
-NeoBundle 'ynkdir/vim-funlib'
-
 
 " Colorscheme
 NeoBundle 'nanotech/jellybeans.vim'
@@ -86,6 +76,17 @@ NeoBundle 'vim-scripts/Wombat'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'vim-scripts/rdark'
 
+" Text
+NeoBundle 'kana/vim-smartinput'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'mattn/multi-vim'
+NeoBundle 'AndrewRadev/switch.vim'
+NeoBundle 'koron/chalice'
+NeoBundle 'ynkdir/vim-funlib'
+
+" Markdown
+NeoBundle 'kannokanno/previm'
+
 " HTML
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'h1mesuke/vim-alignta'
@@ -93,12 +94,11 @@ NeoBundle 'sjl/gundo.vim'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'hokaccha/vim-html5validator'
 NeoBundle 'digitaltoad/vim-jade'
-NeoBundle 'amirh/HTML-AutoCloseTag'
-NeoBundle 'gorodinskiy/vim-coloresque'
+"NeoBundle 'amirh/HTML-AutoCloseTag'
+"NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tpope/vim-haml'
 
 " CSS
-" NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'miripiruni/CSScomb-for-Vim.git'
 
@@ -123,8 +123,9 @@ NeoBundle "majutsushi/tagbar"
 " Git
 NeoBundle 'tpope/vim-fugitive'
 
+
 " Other
-NeoBundle 'soramugi/auto-ctags.vim'
+"NeoBundle 'soramugi/auto-ctags.vim'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'scrooloose/syntastic.git'
 NeoBundle 'Lokaltog/vim-powerline'
@@ -274,6 +275,10 @@ set wildmode=list:longest,full
 " syntax color
 syntax on
 
+colorscheme twilight
+
+" delete beep & flashing
+set vb t_vb=
 
 " search
 set ignorecase
@@ -643,8 +648,11 @@ augroup MyAutoCmd
 	" insert "<br />"
 	autocmd FileType html,xhtml inoremap <S-CR> <br /><CR>
 
-	" Disable Indent for HTML file
+	" <!TODO> Disable Indent for HTML file
 	autocmd FileType html,xhtml set indentexpr&
+
+	" Set filetype for markdown
+	autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 
 	" Enable Omni completion
 	autocmd FileType css,scss,sass setlocal omnifunc=csscomplete#CompleteCSS
@@ -1096,86 +1104,6 @@ endfunction
 "}}}
 
 " -----------------------------------------------------------------------
-" neocomplcache.vim: {{{
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 0
-
-let hooks = neobundle#get_hooks('neocomplcache.vim')
-function! hooks.on_source(bundle)
-	" Use smartcase
-	let g:neocomplcache_enable_smart_case = 1
-	let g:neocomplcache_enable_camel_case_completion = 1
-	let g:neocomplcache_enable_underbar_completion = 1
-	let g:neocomplcache_min_syntax_length = 3
-
-	" Quick Type, ignore neocomplcache.
-	let g:NeoComplCache_SkipCompletionTime = '0.3'
-	let g:NeoComplCache_SkipInputTime = '0.1'
-
-	" Define file-type dependent dictionaries.
-	let g:neocomplcache_dictionary_filetype_lists = {
-		\ 'default' : '',
-		\ 'javascript' : expand('~/dict/jQuery.dict'),
-		\ 'scheme' : expand('~/.gosh_completions')
-		\ }
-
-	" Define keyword, for minor languages
-	if !exists('g:neocomplcache_keyword_patterns')
-	let g:neocomplcache_keyword_patterns = {}
-	endif
-	let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
-
-	" Plugin key-mappings.
-	inoremap <expr><C-g> neocomplcache#undo_completion()
-	inoremap <expr><C-l> neocomplcache#complete_common_string()
-
-	" <CR>: close popup and save indent.
-	"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-	"function! s:my_cr_function()
-	"  return neocomplcache#smart_close_popup() . "\<CR>"
-	"  " For no inserting <CR> key.
-	"  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-	"endfunction
-	"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
-	" <TAB>: completion.
-	" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-	" <C-h>, <BS>: close popup and delete backword char.
-	inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-	"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-	" <C-n>: neocomplcache.
-	inoremap <expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>\<Down>"
-	"inoremap <expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
-	" <C-p>: keyword completion.
-	inoremap <expr><C-p> pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
-	"inoremap <expr><C-p> pumvisible() ? "\<C-p>" : "\<C-p>\<C-n>"
-	inoremap <expr><C-y> neocomplcache#close_popup()
-	inoremap <expr><C-e> neocomplcache#cancel_popup()
-
-	imap <C-s> <Plug>(neocomplcache_start_unite_snippet)
-
-	" <S-TAB>: completion back.
-	inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-	" Close popup by <Space>.
-	"inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
-
-	" <C-j>: Vim native-Omni completion.
-	"inoremap <expr><C-j> &filetype == 'vim' ? "\<C-x>\<C-v>\<C-p>" : "\<C-x>\<C-o>\<C-p>"
-
-	" use unite
-	"imap <C-k> <Plug>(neocomplcache_start_unite_complete)
-	"imap <C-s>  <Plug>(neocomplcache_start_unite_snippet)
-	"smap <C-k> <Plug>(neocomplcache_snippets_expand)
-
-	" Snippets Edit commands for NeoComplCache
-	"nnoremap <Leader>nce :NeoComplCacheEditSnippets
-endfunction
-
-unlet bundle
-
-"}}}
-"
-" -----------------------------------------------------------------------
 " neosnippet.vim: {{{
 
 let bundle = neobundle#get('neosnippet.vim')
@@ -1198,8 +1126,6 @@ function! bundle.hooks.on_source(bundle)
 
   inoremap <expr><C-g>     neocomplete#undo_completion()
   inoremap <expr><C-l>     neocomplete#complete_common_string()
-  " inoremap <expr><C-g>     neocomplcache#undo_completion()
-  " inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
   " Snippets file dir
   if s:is_windows
@@ -1392,7 +1318,7 @@ let g:html5_aria_attributes_complete = 1
 " -----------------------------------------------------------------------
 " QuickBuf: {{{
 "  - https://github.com/vim-scripts/QuickBuf
-let g:qb_hotkey = "<F2>"
+"let g:qb_hotkey = "<F2>"
 "}}}
 
 " -----------------------------------------------------------------------
@@ -1542,6 +1468,11 @@ nnoremap <F3> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
 
 let g:javascript_enable_domhtmlcss = 1
 
+" -----------------------------------------------------------------------
+" previm: {{{
+" g:previm_open_cmd = open -a Chrome
+"}}}
+"
 " -----------------------------------------------------------------------
 " auto-ctags.vim: {{{
 let g:auto_ctags = 1

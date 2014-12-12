@@ -49,8 +49,6 @@ set columns=120
 set lines=60
 " コマンドラインの高さ(GUI使用時)
 set cmdheight=2
-" delete beep & flashing
-set vb t_vb=
 
 " 指定した文字コードで開きなおすコマンド群
 command! Cp932 edit ++enc=cp932
