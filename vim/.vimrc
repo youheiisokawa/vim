@@ -93,10 +93,13 @@ NeoBundle 'h1mesuke/vim-alignta'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'hokaccha/vim-html5validator'
-NeoBundle 'digitaltoad/vim-jade'
 "NeoBundle 'amirh/HTML-AutoCloseTag'
 "NeoBundle 'gorodinskiy/vim-coloresque'
+
+" Template engine
+NeoBundle 'digitaltoad/vim-jade'
 NeoBundle 'tpope/vim-haml'
+NeoBundle 'slim-template/vim-slim'
 
 " CSS
 NeoBundle 'hail2u/vim-css3-syntax'
@@ -275,7 +278,10 @@ set wildmode=list:longest,full
 " syntax color
 syntax on
 
-colorscheme twilight
+" colorscheme twilight
+" let g:molokai_original = 1
+" colorscheme molokai
+colorscheme jellybeans
 
 " delete beep & flashing
 set vb t_vb=
@@ -398,6 +404,9 @@ set noundofile
 
 " javascript実行環境をnode.jsへ
 let $JS_CMD='node'
+
+" カーソルを行頭、行末で止まらないようにする
+set whichwrap=b,s,h,l,<,>,[,]
 "}}}
 
 " -----------------------------------------------------------------------
@@ -635,10 +644,12 @@ augroup MyAutoCmd
 		autocmd BufNewFile *.html 0r ~/vimfiles/templates/tmpl.html
 		autocmd BufNewFile *.css 0r ~/vimfiles/templates/css/blank.css
 		autocmd BufNewFile *.js 0r ~/vimfiles/templates/js/tmpl.js
+		autocmd BufNewFile *.coffee 0r ~/vimfiles/templates/tmpl.coffee
 	else
 		autocmd BufNewFile *.html 0r ~/.vim/templates/tmpl.html
 		autocmd BufNewFile *.css 0r ~/.vim/templates/css/blank.css
 		autocmd BufNewFile *.js 0r ~/.vim/templates/js/tmpl.js
+		autocmd BufNewFile *.coffee 0r ~/.vim/templates/tmpl.coffee
 	endif
 
 
@@ -694,10 +705,10 @@ augroup MyAutoCmd
     "autocmd BufEnter * if &filetype == "javascript" | set foldmarker={,} | set foldlevel=3 | set foldcolumn=7 | endif
 
 	" TODO: delete whitespace
-    if has("gui_running")
-        "autocmd BufWritePre * :%s/\s\+$//e
-        autocmd BufWritePre * :call TrimWhiteSpace()
-    endif
+    " if has("gui_running")
+    "     "autocmd BufWritePre * :%s/\s\+$//e
+    "     autocmd BufWritePre * :call TrimWhiteSpace()
+    " endif
 
 augroup END
 

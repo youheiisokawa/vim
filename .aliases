@@ -39,6 +39,8 @@ alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
 
 # Quick gulp start
 alias ready='mvim && gulp serve'
+# Bundler exec command
+alias be='bundle exec'
 
 # for ctags
 alias ctags=/usr/local/Cellar/ctags/5.8/bin/ctags

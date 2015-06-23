@@ -16,9 +16,10 @@ set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V
 "set guifont=Consolas:h11
 "set guifontwide=MS_Gothic:h11:cSHIFTJIS
 if (has('gui_macvim'))
-	set guifont=Consolas:h17
-	" set guifont=Ricty:h15
-	set guifontwide=Ricty:h17
+	" set guifont=Consolas:h15
+	set guifont=Source_Han_Code_JP:h14
+	" set guifontwide=Ricty:h15
+	set guifontwide=Source_Han_Code_JP:h14
 else
 	set guifont=Consolas:h11
 	set guifontwide=MS_Gothic:h11:cSHIFTJIS

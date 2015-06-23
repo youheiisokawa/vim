@@ -194,6 +194,14 @@ precmd () {
 # バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
 RPROMPT="%1(v|%F{green}%1v%f|)"
 
+hlcopy() { pbpaste | highlight $* -O rtf | pbcopy }
+
+rbenvsudo(){
+  executable=$1
+  shift 1
+  sudo $(rbenv which $executable) $*
+}
+
 ## load user .aliases and .zshrc configuration file
 #
 [ -f $HOME/.aliases ] && source $HOME/.aliases
