@@ -23,14 +23,16 @@ endfunction
 filetype off
 
 if has('vim_starting')
-  set nocompatible
+  if &compatible
+	set nocompatible
+  endif
 
   if s:is_windows
     set runtimepath+=~/vimfiles/bundle/neobundle.vim
-    call neobundle#rc(expand('~/vimfiles/bundle/'))
+    call neobundle#begin(expand('~/vimfiles/bundle/'))
   else
     set runtimepath+=~/.vim/bundle/neobundle.vim
-    call neobundle#rc(expand('~/.vim/bundle/'))
+    call neobundle#begin(expand('~/.vim/bundle/'))
   endif
 endif
 
@@ -86,6 +88,9 @@ NeoBundle 'ynkdir/vim-funlib'
 
 " Markdown
 NeoBundle 'kannokanno/previm'
+NeoBundle "godlygeek/tabular"
+NeoBundle "joker1007/vim-markdown-quote-syntax"
+NeoBundle "rcmdnk/vim-markdown"
 
 " HTML
 NeoBundle 'mattn/emmet-vim'
@@ -237,6 +242,7 @@ call neobundle#config('vinarise.vim', {
 	\  }
 	\})
 
+call neobundle#end()
 
 filetype plugin indent on
 
@@ -272,10 +278,14 @@ set showcmd
 set wildmenu
 set wildmode=list:longest,full
 
+colorscheme jellybeans
 " syntax color
 syntax on
+" colorscheme molokai
+" let g:molokai_original = 1
+" let g:rehash256 = 1
+set background=dark
 
-colorscheme twilight
 
 " delete beep & flashing
 set vb t_vb=
@@ -291,13 +301,15 @@ set grepprg=grep\ -nH
 " edit
 set showmatch
 set backspace=indent,eol,start
-"クリップボードをWindowsと連携
+"クリップボードをOSと連携
 set clipboard=unnamed
 set pastetoggle=<F12>
 set guioptions+=a
 " 横スクロールを出す
 set guioptions+=b
 command! -nargs=1 -bang -bar -complete=file Rename sav<bang> <args> | call delete(expand('#:p'))
+" カーソルを行頭、行末で止まらないようにする
+set whichwrap=b,s,h,l,<,>,[,]
 
 " tab
 set tabstop=4
@@ -398,6 +410,20 @@ set noundofile
 
 " javascript実行環境をnode.jsへ
 let $JS_CMD='node'
+
+set ambiwidth=double
+" 文字コードを元に戻す
+set encoding=utf-8
+" 文字化け回避
+source $VIMRUNTIME/delmenu.vim
+set langmenu=ja_jp.utf-8
+source $VIMRUNTIME/menu.vim
+" 上下最低２行を残してウィンドウをスクロールさせる
+set scrolloff=2
+" 左右最低三文字を残してウィンドウをスクロールさせる
+set sidescrolloff=3
+" 折り返されている行の頭に++++を表示
+set showbreak=++++
 "}}}
 
 " -----------------------------------------------------------------------
@@ -641,18 +667,18 @@ augroup MyAutoCmd
 		autocmd BufNewFile *.js 0r ~/.vim/templates/js/tmpl.js
 	endif
 
+	" <!TODO> Disable Indent for HTML file
+	autocmd FileType html,xhtml set indentexpr&
+
+	" Set filetype for markdown
+	autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*,txt,text} set filetype=markdown
 
 	" xml, html insert end tag
 	autocmd FileType html,xhtml,xml inoremap <buffer> </ </<C-x><C-o>
 
 	" insert "<br />"
 	autocmd FileType html,xhtml inoremap <S-CR> <br /><CR>
-
-	" <!TODO> Disable Indent for HTML file
-	autocmd FileType html,xhtml set indentexpr&
-
-	" Set filetype for markdown
-	autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+	autocmd FileType markdown inoremap <S-CR> <Space><Space><CR>
 
 	" Enable Omni completion
 	autocmd FileType css,scss,sass setlocal omnifunc=csscomplete#CompleteCSS
@@ -694,10 +720,10 @@ augroup MyAutoCmd
     "autocmd BufEnter * if &filetype == "javascript" | set foldmarker={,} | set foldlevel=3 | set foldcolumn=7 | endif
 
 	" TODO: delete whitespace
-    if has("gui_running")
-        "autocmd BufWritePre * :%s/\s\+$//e
-        autocmd BufWritePre * :call TrimWhiteSpace()
-    endif
+    " if has("gui_running")
+    "     "autocmd BufWritePre * :%s/\s\+$//e
+    "     autocmd BufWritePre * :call TrimWhiteSpace()
+    " endif
 
 augroup END
 
@@ -1472,7 +1498,13 @@ let g:javascript_enable_domhtmlcss = 1
 " previm: {{{
 " g:previm_open_cmd = open -a Chrome
 "}}}
-"
+
+" -----------------------------------------------------------------------
+let g:vim_markdown_liquid=1
+let g:vim_markdown_frontmatter=1
+let g:vim_markdown_math=1
+"}}}
+
 " -----------------------------------------------------------------------
 " auto-ctags.vim: {{{
 let g:auto_ctags = 1
@@ -1612,6 +1644,24 @@ function! TrimWhiteSpace()
   %s/\s*$//e
   ''
 endfunction
+"}}}
+
+" -----------------------------------------------------------------------
+" Commands: {{{
+" 指定した文字コードで開きなおすコマンド群
+command! Cp932 edit ++enc=cp932
+command! Eucjp edit ++enc=euc-jp
+command! Iso2022jp edit ++enc=iso-2202-jp
+command! Utf8 edit ++enc=utf-8
+command! Jis Iso2022jp
+command! Sjis ++enc=cp932
+" 開いているバッファの文字コードを変えるコマンド群
+command! ChgencCp932 set fenc=cp932
+command! ChgencEucjp set fenc=euc-jp
+command! ChgencIso2022jp set fenc=iso-2202-jp
+command! ChgencUtf8 set fenc=utf-8
+command! ChgencJis ChgencIso2022jp
+command! ChgencSjis set fenc=cp932
 "}}}
 
 " Include user's local vim config

@@ -10,6 +10,16 @@ alias skitch='open -g -a skitch'
 alias evernote='open -g -a evernote'
 alias xmind='open -g -a xmind'
 
+code () {
+    if [[ $# = 0 ]]
+    then
+        open -a "Visual Studio Code"
+    else
+        [[ $1 = /* ]] && F="$1" || F="$PWD/${1#./}"
+        open -a "Visual Studio Code" --args "$F"
+    fi
+}
+
 alias bye='sudo shutdown -h now'
 
 # for svn
@@ -37,11 +47,13 @@ alias vim='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"
 alias mvim='/Applications/MacVim.app/Contents/MacOS/mvim'
 alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
 
-# Quick gulp start
-alias ready='mvim && gulp serve'
-
 # for ctags
 alias ctags=/usr/local/Cellar/ctags/5.8/bin/ctags
+
+# other
+alias be='bundle exec'
+# Quick start open vim, gulp:serve task
+alias ready='vim && gulp serve'
 
 # add pathes
 export PATH=~/bin:$PATH
@@ -49,6 +61,7 @@ export PATH=/usr/local/sbin:$PATH # for Homebrew
 export PATH=/usr/local/bin:$PATH  # for Homebrew
 export PATH=~/.nodebrew/current/bin:$PATH  # for nodebrew
 export PATH=/Applications/adt-bundle-mac-x86_64-20131030/sdk/platform-tools:$PATH
+export PATH=/Applications/MAMP/bin/php/php5.5.3/bin:$PATH
 
 # for rbenv
 eval "$(rbenv init -)"

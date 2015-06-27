@@ -177,22 +177,48 @@ case $TERM in
 		;;
 esac
 
-# VCSの情報を取得するzshの便利関数 vcs_infoを使う
-autoload -Uz vcs_info
+# RPrompt
+autoload -Uz VCS_INFO_get_data_git; VCS_INFO_get_data_git 2> /dev/null
 
-# 表示フォーマットの指定
-# %b ブランチ情報
-# %a アクション名(mergeなど)
-zstyle ':vcs_info:*' formats '[%b]'
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
-precmd () {
-    psvar=()
-    LANG=en_US.UTF-8 vcs_info
-    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+function rprompt-git-current-branch {
+        local name st color gitdir action
+        if [[ "$PWD" =~ '/\.git(/.*)?$' ]]; then
+                return
+        fi
+
+        name=`git rev-parse --abbrev-ref=loose HEAD 2> /dev/null`
+        if [[ -z $name ]]; then
+                return
+        fi
+
+        gitdir=`git rev-parse --git-dir 2> /dev/null`
+        action=`VCS_INFO_git_getaction "$gitdir"` && action="($action)"
+
+	if [[ -e "$gitdir/rprompt-nostatus" ]]; then
+		echo "$name$action "
+		return
+	fi
+
+        st=`git status 2> /dev/null`
+	if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
+		color=%F{green}
+	elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
+		color=%F{yellow}
+	elif [[ -n `echo "$st" | grep "^# Untracked"` ]]; then
+                color=%B%F{red}
+        else
+                color=%F{red}
+        fi
+
+        echo "$color$name$action%f%b "
 }
 
-# バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
-RPROMPT="%1(v|%F{green}%1v%f|)"
+# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
+setopt prompt_subst
+
+RPROMPT='[`rprompt-git-current-branch`%~]'
+
+hlcopy() { pbpaste | highlight $* -O rtf | pbcopy }
 
 ## load user .aliases and .zshrc configuration file
 #
