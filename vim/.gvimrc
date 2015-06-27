@@ -2,19 +2,6 @@
 " colorscheme molokai
 colorscheme twilight
 
-" font
-if (has('gui_macvim'))
-	set guifont=Consolas:h15
-	" set guifont=Ricty:h15
-	set guifontwide=Ricty:h15
-else
-	set guifont=Consolas:h15
-	set guifontwide=Ricty:h15
-	" set guifontwide=MS_Gothic:h11:cSHIFTJIS
-end
-
-" カーソルを行頭、行末で止まらないようにする
-set whichwrap=b,s,h,l,<,>,[,]
 " 現在ディレクトリを、バッファで開いているファイルが存在しているディレクトリに
 " 自動的に置き換え
 "set autochdir
@@ -26,6 +13,15 @@ set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V
 "set encoding=cp932
 "set guifont=Consolas:h11
 "set guifontwide=MS_Gothic:h11:cSHIFTJIS
+if (has('gui_macvim'))
+	" set guifont=Consolas:h15
+	set guifont=Source_Han_Code_JP:h14
+	" set guifontwide=Ricty:h15
+	set guifontwide=Source_Han_Code_JP:h14
+else
+	set guifont=Consolas:h11
+	set guifontwide=MS_Gothic:h11:cSHIFTJIS
+end
 
 " ツールバーを消す
 set guioptions-=T

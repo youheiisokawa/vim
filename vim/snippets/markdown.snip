@@ -1,0 +1,30 @@
+snippet [
+	[${1:text}](http://${2:address} "${0:title}")
+snippet [*
+	[${1:link}](${2:`@*`} "${3:title}")
+
+snippet [:
+	[${1:id}]: http://${2:url} "${0:title}"
+snippet [:*
+	[${1:id}]: ${2:`@*`} "${0:title}"
+
+snippet ![
+	![${1:alttext}](${2:/images/image.jpg} "${0:title}")
+snippet ![*
+	![${1:alt}](${2:`@*`} "${3:title}")
+
+snippet ![:
+	![${1:id}]: ${2:url} "${0:title}"
+snippet ![:*
+	![${1:id}]: ${2:`@*`} "${0:title}"
+
+snippet ilc
+abbr Inline Code
+    \`${1}\`${0}
+
+snippet code
+abbr Codeblock
+    \`\`\`${1: language}
+    ${2:body}
+    \`\`\`
+    ${0}

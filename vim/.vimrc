@@ -98,10 +98,13 @@ NeoBundle 'h1mesuke/vim-alignta'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'hokaccha/vim-html5validator'
-NeoBundle 'digitaltoad/vim-jade'
 "NeoBundle 'amirh/HTML-AutoCloseTag'
 "NeoBundle 'gorodinskiy/vim-coloresque'
+
+" Template engine
+NeoBundle 'digitaltoad/vim-jade'
 NeoBundle 'tpope/vim-haml'
+NeoBundle 'slim-template/vim-slim'
 
 " CSS
 NeoBundle 'hail2u/vim-css3-syntax'
@@ -286,6 +289,10 @@ syntax on
 " let g:rehash256 = 1
 set background=dark
 
+" colorscheme twilight
+" let g:molokai_original = 1
+" colorscheme molokai
+colorscheme jellybeans
 
 " delete beep & flashing
 set vb t_vb=
@@ -661,10 +668,12 @@ augroup MyAutoCmd
 		autocmd BufNewFile *.html 0r ~/vimfiles/templates/tmpl.html
 		autocmd BufNewFile *.css 0r ~/vimfiles/templates/css/blank.css
 		autocmd BufNewFile *.js 0r ~/vimfiles/templates/js/tmpl.js
+		autocmd BufNewFile *.coffee 0r ~/vimfiles/templates/tmpl.coffee
 	else
 		autocmd BufNewFile *.html 0r ~/.vim/templates/tmpl.html
 		autocmd BufNewFile *.css 0r ~/.vim/templates/css/blank.css
 		autocmd BufNewFile *.js 0r ~/.vim/templates/js/tmpl.js
+		autocmd BufNewFile *.coffee 0r ~/.vim/templates/tmpl.coffee
 	endif
 
 	" <!TODO> Disable Indent for HTML file

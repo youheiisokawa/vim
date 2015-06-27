@@ -220,6 +220,14 @@ RPROMPT='[`rprompt-git-current-branch`%~]'
 
 hlcopy() { pbpaste | highlight $* -O rtf | pbcopy }
 
+hlcopy() { pbpaste | highlight $* -O rtf | pbcopy }
+
+rbenvsudo(){
+  executable=$1
+  shift 1
+  sudo $(rbenv which $executable) $*
+}
+
 ## load user .aliases and .zshrc configuration file
 #
 [ -f $HOME/.aliases ] && source $HOME/.aliases
