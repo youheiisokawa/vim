@@ -116,6 +116,7 @@ NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'othree/javascript-libraries-syntax.vim'
 NeoBundle 'mklabs/vim-backbone'
 NeoBundle 'leafgarland/typescript-vim'
+NeoBundle 'heavenshell/vim-jsdoc'
 
 " Coffee Script
 NeoBundle 'kchmck/vim-coffee-script'
@@ -531,9 +532,11 @@ nnoremap <silent> <Space>eg  :<C-u>edit $MYGVIMRC<CR>
 nnoremap <Space>v :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif <CR>
 
 " Easy escape. {{{
-inoremap jj <ESC>
+inoremap jk <ESC>
+inoremap jl <ESC>
 " cnoremap <expr> j getcmdline()[getcmdpos()-2 ==# 'j' ? "\<BS>\<C-c>" : 'j'
-onoremap jj <ESC>
+inoremap jk <ESC>
+onoremap jl <ESC>
 
 inoremap j<Space> j
 onoremap j<Space> j
@@ -1484,10 +1487,44 @@ let Grep_Default_Options = '-IR'
 "}}}
 
 " -----------------------------------------------------------------------
+" vim-jsdoc: {{{
+nmap <silent> <C-J> <Plug>(jsdoc)
+"}}}
+
+" -----------------------------------------------------------------------
 " Tagbar: {{{
 " http://qiita.com/FiNGAHOLiC/items/7545c3a7ec6a52d294bf
 nmap <silent> <F9> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
+let g:tagbar_type_coffee = {
+	\ 'ctagstype' : 'coffee',
+	\ 'kinds' : [
+        \ 'c:classes',
+        \ 'm:methods',
+        \ 'f:functions',
+        \ 'v:variables',
+        \ 'f:fields',
+	\ ]
+\ }
+let g:tagbar_type_css = {
+\ 'ctagstype' : 'Css',
+    \ 'kinds'     : [
+        \ 'c:classes',
+        \ 's:selectors',
+        \ 'i:identities'
+    \ ]
+\ }
+let g:tagbar_type_javascript = {
+	\ 'ctagsbin' : 'path/to/jsctags'
+\ }
+let g:tagbar_type_markdown = {
+    \ 'ctagstype' : 'markdown',
+    \ 'kinds' : [
+        \ 'h:Heading_L1',
+        \ 'i:Heading_L2',
+        \ 'k:Heading_L3'
+    \ ]
+\ }
 let g:tagbar_type_ruby = {
     \ 'kinds' : [
         \ 'm:modules',
@@ -1497,6 +1534,19 @@ let g:tagbar_type_ruby = {
         \ 'f:methods',
         \ 'F:singleton methods'
     \ ]
+\ }
+let g:tagbar_type_typescript = {
+	\ 'ctagstype': 'typescript',
+	\ 'kinds': [
+		\ 'c:classes',
+		\ 'n:modules',
+		\ 'f:functions',
+		\ 'v:variables',
+		\ 'v:varlambdas',
+		\ 'm:members',
+		\ 'i:interfaces',
+		\ 'e:enums',
+	\ ]
 \ }
 nnoremap <F3> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
 "}}}
@@ -1516,10 +1566,10 @@ let g:vim_markdown_math=1
 
 " -----------------------------------------------------------------------
 " auto-ctags.vim: {{{
-let g:auto_ctags = 1
-let g:auto_ctags_directory_list = ['.git', '.svn']
-let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
-let g:auto_ctags_filetype_mode = 1
+" let g:auto_ctags = 1
+" let g:auto_ctags_directory_list = ['.git', '.svn']
+" let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
+" let g:auto_ctags_filetype_mode = 1
 "}}}
 
 " -----------------------------------------------------------------------
